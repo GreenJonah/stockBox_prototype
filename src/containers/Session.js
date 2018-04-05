@@ -12,7 +12,7 @@ class Session extends Component {
     render() {
         return (
            <Aux>
-               
+
            </Aux>
         );
     }
