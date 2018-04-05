@@ -1,10 +1,10 @@
 import React from 'react';
 
-const graphs = () => {
+const graph = (props) => {
 
     return (
         <div>Graph</div>
     );
 };
 
-export default graphs;
+export default graph;

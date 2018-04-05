@@ -1,6 +1,6 @@
 import React from 'react';
 
-const sessionSettings = () => {
+const sessionSettings = (props) => {
     return (
         <div>sessionSettings</div>
     );
