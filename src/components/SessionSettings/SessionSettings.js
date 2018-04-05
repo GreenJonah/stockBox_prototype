@@ -1,7 +1,9 @@
 import React from 'react';
 
 const sessionSettings = () => {
-    <div>sessionSettings</div>
+    return (
+        <div>sessionSettings</div>
+    );
 };
 
 export default sessionSettings;
