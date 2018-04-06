@@ -1,7 +1,6 @@
 import React from 'react';
 
-const portfolio = (props) => {
-
+const portfolio = () => {
     return (
         <div>portfolio</div>
     );
