@@ -1,0 +1,10 @@
+.box {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: top;
+    margin-top: 0px;
+    width: 15%;
+    height: 500px;
+    border: 3px solid rgb(31, 30, 30);
+    background-color: red;
+}

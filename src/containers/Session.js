@@ -102,8 +102,9 @@ class Session extends Component {
 
         return (
            <Aux>
-               <Portfolio/>
                <SearchBar/>
+               <Portfolio/>
+               <Tools/>
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
@@ -113,7 +114,7 @@ class Session extends Component {
                />
                <SessionSettings/>
                {stocks}
-               <Tools/>
+               
            </Aux>
         );
     }

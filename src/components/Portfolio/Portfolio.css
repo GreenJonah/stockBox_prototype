@@ -1,10 +1,12 @@
 .box {
-    float: right;
-    float: left;
-    margin-right: auto;
     display: inline-block;
-    width: 65%;
+    box-sizing: border-box;
+    vertical-align: top;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    width: 70%;
     height: 200px;
-    border: 5px solid rgb(31, 30, 30);
-    background-color: #1d1c1c;
+    border: 3px solid rgb(31, 30, 30);
+    background-color: red;
 }
