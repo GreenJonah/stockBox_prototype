@@ -12,3 +12,41 @@
     font-size: 150%;
     padding-left: 20px;
 }
+
+.PurchasePrice {
+    float: right;
+    margin-right: 30px;
+    width: 10%;
+    border: solid;
+}
+
+.MarketPrice {
+    float: right;
+    width: 10%;
+    border: solid;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+
+.GainLoss {
+    float: right;
+    width: 10%;
+    border: solid;
+    margin: 10px;
+}
+
+.Prices {
+    background-color: green;
+    color: white;
+    border-radius: 2px;
+    font-size: 120%;
+    text-align: center;
+}
+
+.Green {
+    background-color: green;
+}
+
+.Red {
+    background-color: red;
+}
