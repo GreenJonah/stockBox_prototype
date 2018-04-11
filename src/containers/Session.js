@@ -28,25 +28,30 @@ class Session extends Component {
     state = {
         owned_stocks: null,
         market_stocks: null,
-        owned_stock_count: 0
+        owned_stock_count: 0,
+        viewport_stock: {
+            symbol: "",
+            purchasePrice: 0,
+            gain_or_loss: 0,
+            marketPrice: 0
+        }
     };
 
     displayStock = (symbol) => {
         console.log(this.state.market_stocks);
         console.log(this.state.owned_stocks);
         console.log(symbol);
-        // console.log(this.state.market_stocks.symbol[symbol]);
-        //const oldCount = this.state.market_stocks[symbol];
-        // const updatedCount = oldCount + 1;
-        // const updatedIngredients = {
-        //     ...this.state.ingredients
-        // };
-        // updatedIngredients[type] = updatedCount;
-        // const priceAddtion = INGREDIENT_PRICES[type];
-        // const oldPrice = this.state.totalPrice;
-        // const newPrice = oldPrice + priceAddtion;
-        // this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-        // this.updatePurchaseState(updatedIngredients);
+
+        let stock = null;
+        const owned = this.state.owned_stocks;
+        for (let i = 0; i < owned.length; i++) {
+            if (owned[i].symbol === symbol) {
+                stock = owned[i];
+            }
+        }
+        console.log(stock);
+
+        this.setState({viewport_stock: stock});
     };
 
     componentDidMount() {
@@ -90,12 +95,22 @@ class Session extends Component {
                 market_stocks={this.state.market_stocks}
             />
         }
+        let graph = "Porfolio GRAPH";
+        if (this.state.viewport_stock.symbol !== "") {
+            graph = this.state.viewport_stock.symbol + " Graph";
+        }
 
         return (
            <Aux>
                <Portfolio/>
                <SearchBar/>
-               <Viewport/>
+               <Viewport
+                   symbol={this.state.viewport_stock.symbol}
+                   purchasePrice={this.state.viewport_stock.purchasePrice}
+                   marketPrice={this.state.viewport_stock.marketPrice}
+                   gain_or_loss={this.state.viewport_stock.gain_or_loss}
+                   graph_type={graph}
+               />
                <SessionSettings/>
                {stocks}
                <Tools/>
