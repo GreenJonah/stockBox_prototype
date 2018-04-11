@@ -1,8 +1,8 @@
-div {
+.box {
     margin-left: auto;
     margin-right: auto;
     width: 65%;
-    height: 20%;
+    height: 50px;
     border: 5px solid black;
     background-color: #1a1919;
 }
