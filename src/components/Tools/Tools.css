@@ -7,5 +7,14 @@
     width: 15%;
     height: 100vh;
     border: 3px solid rgb(31, 30, 30);
-    background-color: red;
+    background-color: #252525;
+    z-index: 3;
+}
+
+.title {
+    width: 15%;
+    height: 15px;
+    background-color: black;
+    position: relative;
+    z-index: 5;
 }
