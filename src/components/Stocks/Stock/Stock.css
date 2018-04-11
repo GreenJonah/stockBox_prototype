@@ -8,14 +8,14 @@
 .StockButton button:hover, .StockButton button:active,
 .StockButton .div:hover, .div.active
 {
-    background-color: #e2e2e2;
+    background-color: #cacaca;
     color: black;
 }
 
 .StockButton button:active, .StockButton button:focus,
 .StockButton .div:active,.StockButton .div:focus
 {
-    background-color: #e2e2e2;
+    background-color: #cacaca;
     color: black;
 }
 

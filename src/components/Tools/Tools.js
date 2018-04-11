@@ -3,7 +3,9 @@ import classes from './Tools.css';
 
 const tools = () => {
     return (
-        <div className={classes.box}>Tools</div>
+        <div className={classes.box}>
+            <p className={classes.tile}>TOOLS</p>
+        </div>
     );
 }
 
