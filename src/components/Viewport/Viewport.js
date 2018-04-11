@@ -38,6 +38,8 @@ const viewport = (props) => {
                 Gain/Loss:
                 <div className={box_color}>{props.gain_or_loss}</div>
             </p>
+            <button>Sell</button>
+            <button>Buy</button>
         </div>
     }
 

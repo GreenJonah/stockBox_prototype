@@ -3,7 +3,7 @@ import classes from './SessionControls.css';
 
 const sessionSettings = (props) => {
     return (
-        <div className={classes.box}>sessionSettings</div>
+        <div className={classes.box}>Session Settings</div>
     );
 };
 

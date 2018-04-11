@@ -50,3 +50,14 @@
 .Red {
     background-color: red;
 }
+
+.box button {
+    background-color: yellow;
+    color: black;
+    border: 3px solid black;
+    font-size: 150%;
+    float: bottom;
+    vertical-align: bottom;
+    margin-left: 50px;
+    margin-right: 50px;
+}
