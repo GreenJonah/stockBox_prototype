@@ -1,8 +1,9 @@
 import React from 'react';
 import Stock from './Stock/Stock';
+import classes from './Stocks.css';
 
 const stocks = (props) => (
-    <div>
+    <div className={classes.box}>
         {props.market_stocks.map(stock => (
             <Stock
                 key={stock.symbol}

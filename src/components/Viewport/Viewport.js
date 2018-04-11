@@ -9,7 +9,7 @@ const viewport = (props) => {
 
     let view = <div className={classes.box}>Viewport<Graph type={props.graph_type}/> </div>;
     if (props.symbol !== "") {
-        view = <div>
+        view = <div className={classes.box}>
             Viewport
             <p>{props.symbol}</p>
             <Graph type={props.graph_type}/>

@@ -105,6 +105,7 @@ class Session extends Component {
                <SearchBar/>
                <Portfolio/>
                <Tools/>
+               {stocks}
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
@@ -113,7 +114,7 @@ class Session extends Component {
                    graph_type={graph}
                />
                <SessionSettings/>
-               {stocks}
+               
            </Aux>
         );
     }
