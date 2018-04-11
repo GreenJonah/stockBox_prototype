@@ -7,7 +7,11 @@ const viewport = (props) => {
     return (
         <div>
             Viewport
+            <p>{props.symbol}</p>
             <Graph/>
+            <p>{props.purchasePrice}</p>
+            <p>{props.marketPrice}</p>
+            <p>{props.gain_or_loss}</p>
         </div>
     );
 };

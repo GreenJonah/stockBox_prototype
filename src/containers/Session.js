@@ -18,7 +18,7 @@ class Session extends Component {
 
     // OUR MARKET STOCK OBJECTS WILL LOOK LIKE THIS
     // market_stock: {
-    //     symbol: "AAPL",
+    //     symbol: "aapl",
     //     latestPrice: 168.35,
     //     changePercent: 0.01026,
     //     change: 1.71,     // Change in dollars
