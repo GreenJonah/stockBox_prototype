@@ -2,9 +2,11 @@
     display: inline-block;
     box-sizing: border-box;
     vertical-align: top;
+    position: relative;
+    float: left;
     margin-top: 0px;
     width: 15%;
-    height: 200px;
+    height: 750px;
     border: 3px solid rgb(31, 30, 30);
     background-color: red;
 }

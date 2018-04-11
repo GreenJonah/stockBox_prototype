@@ -105,7 +105,7 @@ class Session extends Component {
                <SearchBar/>
                <Portfolio/>
                <Tools/>
-               {stocks}
+
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
@@ -113,8 +113,8 @@ class Session extends Component {
                    gain_or_loss={this.state.viewport_stock.gain_or_loss}
                    graph_type={graph}
                />
+               {stocks}
                <SessionSettings/>
-               
            </Aux>
         );
     }

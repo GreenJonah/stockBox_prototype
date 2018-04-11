@@ -1,7 +1,7 @@
 .StockButton button {
     background-color: #2a2a2a;
     color: #dadada;
-    width: 8%;
+    width: 100%;
 }
 
 .StockButton button:hover, .StockButton button:active,
@@ -20,8 +20,9 @@
 
 .StockButton p {
     display: inline-block;
-    width: 30%;
+    width: 35%;
     margin: 2px;
+    font-size: 150%;
 }
 
 .StockButton .PercentageNeg,
