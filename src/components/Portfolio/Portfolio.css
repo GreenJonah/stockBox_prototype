@@ -1,8 +1,12 @@
 .box {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: top;
     margin-left: auto;
     margin-right: auto;
-    width: 65%;
-    height: 50px;
-    border: 5px solid black;
-    background-color: #1a1919;
+    margin-top: 0px;
+    width: 70%;
+    height: 200px;
+    border: 3px solid rgb(31, 30, 30);
+    background-color: red;
 }

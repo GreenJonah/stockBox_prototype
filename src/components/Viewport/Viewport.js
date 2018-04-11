@@ -1,12 +1,13 @@
 import React from 'react';
 import Graph from '../Viewport/Graph/Graph';
 import Aux from '../../hoc/Auxx';
+import classes from './Viewport.css';
 
 const viewport = (props) => {
 
     console.log(props.symbol);
 
-    let view = <div>Viewport<Graph type={props.graph_type}/> </div>;
+    let view = <div className={classes.box}>Viewport<Graph type={props.graph_type}/> </div>;
     if (props.symbol !== "") {
         view = <div>
             Viewport

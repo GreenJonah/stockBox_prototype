@@ -5,7 +5,8 @@ import Portfolio from '../components/Portfolio/Portfolio';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SessionSettings from '../components/SessionControls/SessionControls';
 import Stocks from '../components/Stocks/Stocks';
-import Viewport from '../components/Viewport/Viewport'
+import Viewport from '../components/Viewport/Viewport';
+import Tools from '../components/Tools/Tools';
 
 class Session extends Component {
 
@@ -101,8 +102,9 @@ class Session extends Component {
 
         return (
            <Aux>
-               <Portfolio/>
                <SearchBar/>
+               <Portfolio/>
+               <Tools/>
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
@@ -112,7 +114,6 @@ class Session extends Component {
                />
                <SessionSettings/>
                {stocks}
-               {/*<Tools/>*/}
            </Aux>
         );
     }
