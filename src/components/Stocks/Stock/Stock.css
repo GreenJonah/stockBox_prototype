@@ -1,0 +1,46 @@
+.StockButton button {
+    background-color: #2a2a2a;
+    color: #dadada;
+    width: 8%;
+}
+
+.StockButton button:hover, .StockButton button:active,
+.StockButton .div:hover, .div.active
+{
+    background-color: #e2e2e2;
+    color: black;
+}
+
+.StockButton button:active, .StockButton button:focus,
+.StockButton .div:active,.StockButton .div:focus
+{
+    background-color: #e2e2e2;
+    color: black;
+}
+
+.StockButton p {
+    display: inline-block;
+    width: 30%;
+    margin: 2px;
+}
+
+.StockButton .PercentageNeg,
+.StockButton .PercentagePos,
+.StockButton .Change
+{
+    border: solid;
+    text-align:center;
+    text-decoration: none;
+    border-radius: 4px;
+    border-color: black;
+}
+
+.StockButton .PercentagePos {
+    background-color: green;
+    color: black;
+}
+
+.StockButton .PercentageNeg {
+    background-color: red;
+    color: black;
+}
