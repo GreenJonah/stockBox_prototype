@@ -7,3 +7,8 @@
     border: 3px solid rgb(31, 30, 30);
     background-color: red;
 }
+
+.title {
+    font-size: 150%;
+    padding-left: 20px;
+}

@@ -1,0 +1,16 @@
+.GraphBox {
+    border-radius: 8px;
+    height: 250px;
+    margin: auto;
+    width: 50%;
+    border: 3px solid black;
+    padding: 10px;
+}
+
+.Red {
+    background-color: red;
+}
+
+.Green {
+    background-color: green;
+}
