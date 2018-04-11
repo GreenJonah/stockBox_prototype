@@ -1,8 +1,9 @@
 import React from 'react';
+import classes from './SessionControls.css';
 
 const sessionSettings = (props) => {
     return (
-        <div>sessionSettings</div>
+        <div className={classes.box}>sessionSettings</div>
     );
 };
 
