@@ -114,7 +114,6 @@ class Session extends Component {
                />
                <SessionSettings/>
                {stocks}
-               
            </Aux>
         );
     }
