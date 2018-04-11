@@ -3,7 +3,7 @@ import React from 'react';
 const graph = (props) => {
 
     return (
-        <div>Graph</div>
+        <div>{props.type}</div>
     );
 };
 
