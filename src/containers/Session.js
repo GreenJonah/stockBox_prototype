@@ -7,6 +7,7 @@ import SessionSettings from '../components/SessionControls/SessionControls';
 import Stocks from '../components/Stocks/Stocks';
 import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
+import classes from './Session.css';
 
 class Session extends Component {
 
@@ -120,9 +121,9 @@ class Session extends Component {
         }
 
         return (
-           <Aux>
-               <SearchBar/>
-               <Portfolio
+           <Aux className={classes.wrapper}>
+               <SearchBar className={classes.search}/>
+               <Portfolio className={classes.port}
                     portfolio={this.state.portfolio}
                     buyPower={this.state.buyPower}
                     stockNet={this.state.stockNet}

@@ -7,3 +7,25 @@
     background-color: #252525;
     color: white;
 }
+
+.wrapper {
+    display: grid;
+    position: relative;
+    width: 70%;
+    height: 200px;
+    grid-template-columns: 200px 200px 200px;
+    grid-template-rows: 200px 200px; 
+}
+
+.progress { 
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+.interval { 
+    grid-column: 1;
+    grid-row: 2 / 3;
+}
+.options  { 
+    grid-column: 3; 
+    grid-row: 4;
+}

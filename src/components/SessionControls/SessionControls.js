@@ -9,9 +9,11 @@ const sessionSettings = (props) => {
     return (
         <div className={classes.box}>
             SESSION SETTINGS
-            <ProgressBar/>
-            <IntervalControl/>
-            <SessionOptions/>
+            <div className={classes.wrapper}>
+            <ProgressBar className={classes.progress}/>
+            <IntervalControl className={classes.interval}/>
+            <SessionOptions className={classes.options}/>
+            </div>
         </div>
     );
 };
