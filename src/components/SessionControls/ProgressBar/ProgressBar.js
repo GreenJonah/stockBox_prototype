@@ -2,7 +2,9 @@ import React from 'react';
 
 const progressBar = (props) => {
     return (
-        <div>Progess Bar</div>
+        <div>Progess Bar
+
+        </div>
     );
 };
 
