@@ -3,6 +3,7 @@
     color: #dadada;
     width: 100%;
     border-color: black;
+    margin-bottom: 4px;
 }
 
 .StockButton button:hover, .StockButton button:active,

@@ -5,8 +5,6 @@ import classes from './Viewport.css';
 
 const viewport = (props) => {
 
-    console.log(props.symbol);
-
     let view = <div className={classes.box}>
                     <p className={classes.title}>PORTFOLIO</p>
         <button onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
@@ -21,8 +19,16 @@ const viewport = (props) => {
             graph_color = "red";
             box_color = classes.Red;
         }
+        let logo_tag = props.logo;
+        if (props.logo !== "NA") {
+            logo_tag = <img src={props.logo} alt="LOGO!!" height="50" width="50"/>
+        }
+
         view = <div className={classes.box}>
-            <div className={classes.title}>{symbol_upper}</div>
+            <div className={classes.title}>
+                <p>{symbol_upper}</p>
+                <p>{logo_tag}</p>
+            </div>
             <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
             <Graph
                 type={props.graph_data}
