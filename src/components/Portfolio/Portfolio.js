@@ -4,13 +4,13 @@ import classes from './Portfolio.css';
 const portfolio = () => {
     return (
         <div className={classes.box}>
-            <div className={classes.gridcontainer}>
-                <div className={classes.title}>STOCK BOX</div>
-                <div className={classes.port}>Portfolio</div>
-                <div className={classes.buy}>Buy Power</div>
-                <div className={classes.net}>Stock Net</div>
-                <div className={classes.returns}>Returns</div>
-                <div className={classes.gains}>Gains/Loss</div>
+            <div className={classes.title}>STOCK BOX</div>
+            <div className={classes.wrapper}>
+                <div className={classes.label}>Portfolio</div>
+                <div className={classes.label}>Buy Power</div>
+                <div className={classes.label}>Stock Net</div>
+                <div className={classes.label}>Returns</div>
+                <div className={classes.label}>Gains/Loss</div>
             </div>
         </div>
     );

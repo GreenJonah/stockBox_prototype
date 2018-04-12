@@ -16,41 +16,20 @@
     height: 200px;
     border: 3px solid rgb(31, 30, 30);
     background-color: #252525;
+    position: relative;
+    z-index: 500;
 }
 
-.gridcontainter {
+.wrapper {
+    z-index: 1;
+    position: relative;
     display: grid;
-    grid-template-areas:
-    'title title title title title title'
-    'port buy net'
-    'port buy net';
-    grid-gap: 10px;
-}
-.port {
-    grid-area: port;
-    color: white;
+    margin-top: 2%;
+    grid-template-columns:repeat(5, 1fr);
+    grid-gap: 1em;
 }
 
-.buy {
-    grid-area: buy;
+.label {
+    font-size: 20px;
     color: white;
-    
-}
-
-.net {
-    grid-area: net;
-    color: white;
-    
-}
-
-.returns {
-    grid-area: returns;
-    color: white;
-    
-}
-
-.gains {
-    grid-area: gains;
-    color: white;
-    
 }
