@@ -23,7 +23,7 @@
     border: solid;
     margin-top: 2%;
     margin-right: 2%;
-    background-color: green;
+    background-color: #9ACD32;
     color: black;
     font-size: 110%;
 }
@@ -32,6 +32,7 @@
     margin-top: 5%;
     width: 11%;
     float: right;
+    margin-right: 5%;
 }
 
 .PurchasePrice, .MarketPrice, .GainLoss {
@@ -44,8 +45,8 @@
 }
 
 .Prices {
-    background-color: green;
-    color: white;
+    background-color: #9ACD32;
+    color: black;
     border-radius: 2px;
     font-size: 120%;
     text-align: center;
@@ -53,7 +54,7 @@
 }
 
 .Green, .Red {
-    color: white;
+    color: black;
     border-radius: 2px;
     font-size: 120%;
     text-align: center;
@@ -61,15 +62,15 @@
 }
 
 .Green {
-    background-color: green;
+    background-color: #9ACD32;
 }
 
 .Red {
-    background-color: red;
+    background-color: #ff3333;
 }
 
 .Trading button{
-    background-color: yellow;
+    background-color: orange;
     color: black;
     width: 18%;
     border: 3px solid black;

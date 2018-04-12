@@ -4,9 +4,9 @@ import classes from './Tools.css';
 const tools = () => {
     return (
         <div className={classes.box}>
-            <p className={classes.tile}>TOOLS</p>
+            <div className={classes.title}>TOOLS</div>
         </div>
     );
-}
+};
 
 export default tools;

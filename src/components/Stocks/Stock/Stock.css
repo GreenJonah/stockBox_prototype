@@ -38,11 +38,11 @@
 }
 
 .StockButton .PercentagePos {
-    background-color: green;
+    background-color: #9ACD32;
     color: black;
 }
 
 .StockButton .PercentageNeg {
-    background-color: red;
+    background-color: #ff3333;
     color: black;
 }
