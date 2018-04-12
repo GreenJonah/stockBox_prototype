@@ -1,4 +1,11 @@
-.box {
+.title {
+    grid-area: title;
+    color: rgb(221, 107, 0);
+    font-family: 'Helvetica bold';
+    font-size: 30px;
+}
+
+.box { 
     display: inline-block;
     box-sizing: border-box;
     vertical-align: top;
@@ -9,4 +16,20 @@
     height: 200px;
     border: 3px solid rgb(31, 30, 30);
     background-color: #252525;
+    position: relative;
+    z-index: 500;
+}
+
+.wrapper {
+    z-index: 1;
+    position: relative;
+    display: grid;
+    margin-top: 2%;
+    grid-template-columns:repeat(5, 1fr);
+    grid-gap: 1em;
+}
+
+.label {
+    font-size: 20px;
+    color: white;
 }
