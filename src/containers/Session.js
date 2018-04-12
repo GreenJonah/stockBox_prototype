@@ -26,6 +26,7 @@ class Session extends Component {
     // }
 
     state = {
+        error: false,
         owned_stocks: null,
         market_stocks: null,
         owned_stock_count: 0,
@@ -40,7 +41,8 @@ class Session extends Component {
         buyPower: 600,
         stockNet: 350,
         percent: -5,
-        gain_loss: -50
+        gain_loss: -50,
+        logo: "NA"
     };
 
 
@@ -94,6 +96,15 @@ class Session extends Component {
 
         this.setState({viewport_stock: stock});
         this.setState({graph_data: stock.symbol});
+
+        axios.get("/stock/" + symbol + "/logo")
+            .then(response => {
+                this.setState({logo: response.data.url});
+                console.log(response.data);
+            })
+            .catch(error => {
+                this.setState({error: true})
+            });
     };
 
     displayPortfolio = () => {
@@ -137,6 +148,7 @@ class Session extends Component {
                    gain_or_loss={this.state.viewport_stock.gain_or_loss}
                    graph_data={this.state.graph_data}
                    display_porfolio={() => this.displayPortfolio()}
+                   logo={this.state.logo}
                />
                {stocks}
                <SessionSettings/>
