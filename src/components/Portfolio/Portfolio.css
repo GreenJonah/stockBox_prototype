@@ -45,3 +45,12 @@
     color: white;
     text-align: center;
 }
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: #ff3333;
+}
+

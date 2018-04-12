@@ -35,7 +35,12 @@ class Session extends Component {
             gain_or_loss: 0,
             marketPrice: 0
         },
-        graph_data: "Portfolio"
+        graph_data: "Portfolio",
+        portfolio: 950,
+        buyPower: 600,
+        stockNet: 350,
+        percent: -5,
+        gain_loss: -50
     };
 
 
@@ -117,7 +122,13 @@ class Session extends Component {
         return (
            <Aux>
                <SearchBar/>
-               <Portfolio/>
+               <Portfolio
+                    portfolio={this.state.portfolio}
+                    buyPower={this.state.buyPower}
+                    stockNet={this.state.stockNet}
+                    percent={this.state.percent}
+                    gain_loss={this.state.gain_loss}
+               />
                <Tools/>
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
