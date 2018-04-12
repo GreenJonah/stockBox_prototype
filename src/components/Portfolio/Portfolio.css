@@ -1,4 +1,11 @@
-.box {
+.title {
+    grid-area: title;
+    color: rgb(221, 107, 0);
+    font-family: 'Helvetica bold';
+    font-size: 30px;
+}
+
+.box { 
     display: inline-block;
     box-sizing: border-box;
     vertical-align: top;
@@ -9,4 +16,41 @@
     height: 200px;
     border: 3px solid rgb(31, 30, 30);
     background-color: #252525;
+}
+
+.gridcontainter {
+    display: grid;
+    grid-template-areas:
+    'title title title title title title'
+    'port buy net'
+    'port buy net';
+    grid-gap: 10px;
+}
+.port {
+    grid-area: port;
+    color: white;
+}
+
+.buy {
+    grid-area: buy;
+    color: white;
+    
+}
+
+.net {
+    grid-area: net;
+    color: white;
+    
+}
+
+.returns {
+    grid-area: returns;
+    color: white;
+    
+}
+
+.gains {
+    grid-area: gains;
+    color: white;
+    
 }
