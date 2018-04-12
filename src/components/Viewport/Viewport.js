@@ -9,6 +9,7 @@ const viewport = (props) => {
 
     let view = <div className={classes.box}>
                     <p className={classes.title}>PORTFOLIO</p>
+                     <div className={classes.MiniGraph}>Mini</div>
                     <Graph type={props.graph_type}/>
                 </div>;
     let symbol_upper = props.symbol.toUpperCase();
@@ -21,25 +22,30 @@ const viewport = (props) => {
             box_color = classes.Red;
         }
         view = <div className={classes.box}>
-            <p className={classes.title}>{symbol_upper}</p>
+            <div className={classes.title}>{symbol_upper}</div>
+            <div className={classes.MiniGraph }>Mini</div>
             <Graph
                 type={props.graph_type}
                 color={graph_color}
             />
-            <p className={classes.PurchasePrice}>
-                Purchase Price:
-                <div className={classes.Prices}>{props.purchasePrice}</div>
-            </p>
-            <p className={classes.MarketPrice}>
-                Market Price:
-                <div className={classes.Prices}>{props.marketPrice}</div>
-            </p>
-            <p className={classes.GainLoss}>
-                Gain/Loss:
-                <div className={box_color}>{props.gain_or_loss}</div>
-            </p>
-            <button>Sell</button>
-            <button>Buy</button>
+            <div className={classes.StockInfo}>
+                <div className={classes.PurchasePrice}>
+                    Purchase Price
+                    <div className={classes.Prices}>{props.purchasePrice}</div>
+                </div>
+                <div className={classes.MarketPrice}>
+                    Market Price
+                    <div className={classes.Prices}>{props.marketPrice}</div>
+                </div>
+                <div className={classes.GainLoss}>
+                    Gain/Loss
+                    <div className={box_color}>{props.gain_or_loss}</div>
+                </div>
+            </div>
+            <div className={classes.Trading}>
+                <button >Sell</button>
+                <button >Buy</button>
+            </div>
         </div>
     }
 
