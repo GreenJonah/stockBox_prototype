@@ -6,7 +6,6 @@ import Aux from '../../hoc/Auxx';
 const stocks = (props) => (
     <Aux>
         <div className={classes.box}>
-            <div className={classes.title}>STOCKS</div>
             {props.market_stocks.map(stock => (
                 <Stock
                     key={stock.symbol}

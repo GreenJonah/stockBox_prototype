@@ -6,6 +6,7 @@ const searchBar = (props) => {
     return (
         <div className={classes.box}>
             <div>SEARCH BAR</div>
+            <div className={classes.title}>STOCKS</div>
         </div>
     );
 };

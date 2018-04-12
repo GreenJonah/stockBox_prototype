@@ -2,10 +2,22 @@
     display: inline-block;
     box-sizing: border-box;
     vertical-align: top;
-    margin-top: 0px;
     width: 15%;
     height: 200px;
     border: 3px solid rgb(31, 30, 30);
     background-color: #252525;
     color: white;
+    position: relative;
+}
+
+.title {
+    background-color: black;
+    color: grey;
+    font-size: 150%;
+    text-align: center;
+    padding-top: 10px;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+    position: absolute;
 }
