@@ -1,12 +1,11 @@
 .GraphBox {
     border-radius: 8px;
-    height: 275px;
-    width: 50%;
+    height: 320px;
+    width: 65%;
     border: 3px solid black;
     display: inline-block;
-    margin-left: 24.5%;
-    margin-top: 5%;
-    margin-bottom: auto;
+    margin-left: 15%;
+    margin-top: 3%;
 }
 
 .Red {
@@ -17,4 +16,11 @@
 .Green {
     background-color: green;
     border: solid;
+}
+
+.Line {
+    width: 400px;
+    height: 3px;
+    background: black;
+    margin-top: 150px;
 }

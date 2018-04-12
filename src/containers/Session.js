@@ -34,25 +34,11 @@ class Session extends Component {
             purchasePrice: 0,
             gain_or_loss: 0,
             marketPrice: 0
-        }
+        },
+        graph_data: "Portfolio"
     };
 
-    displayStock = (symbol) => {
-        console.log(this.state.market_stocks);
-        console.log(this.state.owned_stocks);
-        console.log(symbol);
 
-        let stock = null;
-        const owned = this.state.owned_stocks;
-        for (let i = 0; i < owned.length; i++) {
-            if (owned[i].symbol === symbol) {
-                stock = owned[i];
-            }
-        }
-        console.log(stock);
-
-        this.setState({viewport_stock: stock});
-    };
 
     componentDidMount() {
         // let symbol = this.state.owned_stocks[1].owned_stock.symbol;
@@ -87,6 +73,38 @@ class Session extends Component {
             });
     }
 
+    displayStock = (symbol) => {
+        console.log(this.state.market_stocks);
+        console.log(this.state.owned_stocks);
+        console.log(symbol);
+
+        let stock = null;
+        const owned = this.state.owned_stocks;
+        for (let i = 0; i < owned.length; i++) {
+            if (owned[i].symbol === symbol) {
+                stock = owned[i];
+            }
+        }
+        console.log(stock);
+
+        this.setState({viewport_stock: stock});
+        this.setState({graph_data: stock.symbol});
+    };
+
+    displayPortfolio = () => {
+
+        let obj = {
+            symbol: "",
+            purchasePrice: 0,
+            gain_or_loss: 0,
+            marketPrice: 0
+        };
+        this.setState({viewport_stock: obj});
+        this.setState({graph_data: "Portfolio"});
+
+        console.log("The sybmol is: " + this.state.viewport_stock.symbol);
+    };
+
     render() {
         let stocks = <p>Data Cannot be loaded</p>;
         if (this.state.market_stocks) {
@@ -95,23 +113,19 @@ class Session extends Component {
                 market_stocks={this.state.market_stocks}
             />
         }
-        let graph = "Porfolio GRAPH";
-        if (this.state.viewport_stock.symbol !== "") {
-            graph = this.state.viewport_stock.symbol + " Graph";
-        }
 
         return (
            <Aux>
                <SearchBar/>
                <Portfolio/>
                <Tools/>
-
                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
                    marketPrice={this.state.viewport_stock.marketPrice}
                    gain_or_loss={this.state.viewport_stock.gain_or_loss}
-                   graph_type={graph}
+                   graph_data={this.state.graph_data}
+                   display_porfolio={() => this.displayPortfolio()}
                />
                {stocks}
                <SessionSettings/>

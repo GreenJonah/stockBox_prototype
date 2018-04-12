@@ -4,7 +4,7 @@ import classes from './SearchBar.css';
 const searchBar = (props) => {
 
     return (
-        <div className={classes.box}>searchBar</div>
+        <div className={classes.box}>SEARCH BAR</div>
     );
 };
 

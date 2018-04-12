@@ -7,9 +7,13 @@ const graph = (props) => {
     if (props.color === "red") {
         ClassColor = classes.Red;
     }
-
+    // props.type
     return (
-        <div className={[classes.GraphBox, ClassColor].join(' ')}>{props.type}</div>
+        <div className={[classes.GraphBox, ClassColor].join(' ')}>
+            <div className={classes.Line}>
+
+            </div>
+        </div>
     );
 };
 

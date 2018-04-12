@@ -9,8 +9,8 @@ const viewport = (props) => {
 
     let view = <div className={classes.box}>
                     <p className={classes.title}>PORTFOLIO</p>
-                     <div className={classes.MiniGraph}>Mini</div>
-                    <Graph type={props.graph_type}/>
+        <button onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
+                    <Graph type={props.graph_data}/>
                 </div>;
     let symbol_upper = props.symbol.toUpperCase();
 
@@ -23,9 +23,9 @@ const viewport = (props) => {
         }
         view = <div className={classes.box}>
             <div className={classes.title}>{symbol_upper}</div>
-            <div className={classes.MiniGraph }>Mini</div>
+            <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
             <Graph
-                type={props.graph_type}
+                type={props.graph_data}
                 color={graph_color}
             />
             <div className={classes.StockInfo}>
