@@ -3,7 +3,7 @@ import classes from './Stock.css';
 
 const stock = (props) => {
 
-    let percentage = 100 * props.percentage;
+    let percentage = (100 * props.percentage).toFixed(2);
     let percentage_style = classes.PercentagePos;
     if (percentage < 0){
         percentage_style = classes.PercentageNeg;
