@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axios from '../axios-orders';
-import Aux from '../hoc/Auxx';
 import Portfolio from '../components/Portfolio/Portfolio';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SessionSettings from '../components/SessionControls/SessionControls';
@@ -132,17 +131,22 @@ class Session extends Component {
         }
 
         return (
-           <Aux className={classes.wrapper}>
-               <SearchBar className={classes.search}/>
-               <Portfolio className={classes.port}
+           <div className={classes.wrapper}>
+               <div className={classes.search}><SearchBar/></div>
+               <div className={classes.port}> 
+                <Portfolio
                     portfolio={this.state.portfolio}
                     buyPower={this.state.buyPower}
                     stockNet={this.state.stockNet}
                     percent={this.state.percent}
                     gain_loss={this.state.gain_loss}
-               />
-               <Tools/>
-               <Viewport
+                />
+                </div>
+                <div className={classes.tool}>
+                    <Tools/>
+                </div>
+                <div className={classes.view}>
+                <Viewport
                    symbol={this.state.viewport_stock.symbol}
                    purchasePrice={this.state.viewport_stock.purchasePrice}
                    marketPrice={this.state.viewport_stock.marketPrice}
@@ -150,10 +154,13 @@ class Session extends Component {
                    graph_data={this.state.graph_data}
                    display_porfolio={() => this.displayPortfolio()}
                    logo={this.state.logo}
-               />
-               {stocks}
-               <SessionSettings/>
-           </Aux>
+                />
+                </div>
+                <div className={classes.stock}>{stocks}</div>
+                <div className={classes.session}>
+                    <SessionSettings className={classes.session}/>
+                </div>
+           </div>
         );
     }
 }

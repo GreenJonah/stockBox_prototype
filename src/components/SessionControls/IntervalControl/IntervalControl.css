@@ -1,0 +1,19 @@
+.intervalTitle{
+    font-size: 1.2em;
+}
+
+.intervalSelect select{
+    border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa "../../../public/button.png" no-repeat 90% 50%;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+.nextButton{
+    background-color: rgb(221, 107, 0);
+}

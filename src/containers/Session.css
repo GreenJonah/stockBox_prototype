@@ -1,5 +1,42 @@
 .wrapper {
     display: grid;
+    grid-gap: 5px;
     grid-template-columns: 15% 70% 15%;
-    grid-template-rows: 3, auto;
+    grid-template-rows: repeat(8, minmax(100px, auto));
+    grid-template-areas: 
+    "search port tool"
+    "search port tool"
+    "stock view tool"
+    "stock view tool"
+    "stock view tool"
+    "stock session tool"
+    "stock session tool";
+}
+
+.wrapper > * {
+    background-color: #131212;
+    border: 3px solid rgb(14, 13, 13);  
+}
+.search {
+   grid-area: search;
+}
+
+.port {
+    grid-area: port;
+}
+
+.tool {
+    grid-area: tool;
+}
+
+.view {
+    grid-area: view;
+}
+
+.stock {
+    grid-area: stock;
+}
+
+.session {
+    grid-area: session;
 }
