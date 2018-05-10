@@ -1,5 +1,5 @@
 .box {
-    background-color: #cacaca;
+    background-image: linear-gradient(#dadada, #bbbbbb);
 }
 
 .title {
@@ -12,7 +12,6 @@
 
 .title p  {
     display: inline-block;
-    vertical-align: top;
     width: 50px;
     margin-right: 30px;
 }
@@ -76,13 +75,17 @@
     width: 18%;
     border: 3px solid black;
     font-size: 170%;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin: .1em 50px .2em 50px;
     border-radius: 8px;
 
+}
+.Trading button:hover {
+    background-image: linear-gradient(#ec7f02fd, #ca7e04);
+    box-shadow: 0px 0px 5px 0px rgb(26, 23, 23);
+    background-color: #ff9d00;
 }
 
 .Trading {
     margin-left: 28%;
-    margin-top: 5%;
+    margin-top: .1em;
 }
