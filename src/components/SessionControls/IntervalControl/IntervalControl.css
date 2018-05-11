@@ -14,16 +14,19 @@
     outline: none;
 }
 
-#arrow {
-    position: absolute;
-    height: 50px;
-    width: 100px;
+.arrow {
+    margin-left: 0 auto;
+    margin-top: 0 auto;
+    object-fit: cover;
+    width: inherit;
+    height: inherit;
 }
 
 .nextButton {
     background-color: orange;
     color: black;
-    width: 5em;
+    width: 28%;
+    height: 1.5em;
     border: 3px solid black;
     font-size: 170%;
     margin-right: .5em;

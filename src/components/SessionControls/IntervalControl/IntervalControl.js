@@ -12,8 +12,9 @@ const intervalControl = (props) => {
                 <option value="Month">Month</option>
                 <option value="Finish">Finish</option>
             </select>
-            <img id="arrow" src="../../../public/arrow.png" alt="->"/>
-            <button className={classes.nextButton}>-></button>
+            <button className={classes.nextButton}>
+                <img className={classes.arrow} src={require("../../../images/arrow.png")} alt="->"/>
+            </button>
         </div>
     );
 };
