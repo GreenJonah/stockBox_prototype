@@ -2,7 +2,7 @@
     display: grid;
     grid-gap: 5px;
     grid-template-columns: 15% 70% 15%;
-    grid-template-rows: repeat(8, minmax(100px, auto));
+    grid-template-rows: repeat(7, minmax(14.28%, auto));
     grid-template-areas: 
     "search port tool"
     "search port tool"

@@ -9,7 +9,6 @@
     display: grid;
     margin-top: 2%;
     grid-template-columns:repeat(5, 1fr);
-    grid-gap: 1em;
 }
 
 .values {

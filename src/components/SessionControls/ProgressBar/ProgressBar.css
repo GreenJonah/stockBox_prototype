@@ -1,0 +1,25 @@
+.wrapper {
+    display: grid;
+    margin: 1.5% 2% 0px 2%;
+    grid-gap: 2%;
+    font-size: 1.5em;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+    "past bar current";
+}
+
+.bar {
+    grid-area: bar;
+    height: 100%;
+    width: 100%;
+    background: grey;
+}
+
+.pastDate {
+    grid-area: past;
+}
+
+.currentDate {
+    grid-area: current;
+}

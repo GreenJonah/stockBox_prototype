@@ -1,37 +1,36 @@
-.intervalTitle{
-    font-size: 1.2em;
+.wrapper {
+    display: grid;
+    margin: 3% 3% 0% 3%;
+    grid-gap: 5%;
+    grid-template-columns: 2, 1fr;
+    grid-template-rows: 1fr 1fr; 
+    grid-template-areas: 
+    "title title"
+    "select button";
+}
+
+.intervalTitle {
+    grid-area: title;
+    font-size: 185%;
+    margin: 0 auto;
 }
 
 .intervalSelect select{
-    border: 1px solid #ccc;
-    width: 120px;
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fafafa "../../../public/button.png" no-repeat 90% 50%;
-}
-
-.select-style select:focus {
-    outline: none;
-}
-
-.arrow {
-    margin-left: 0 auto;
-    margin-top: 0 auto;
-    object-fit: cover;
-    width: inherit;
-    height: inherit;
+    grid-area: select; 
+    cursor: pointer;
+    color: orange;
 }
 
 .nextButton {
+    grid-area: button;
     background-color: orange;
     color: black;
-    width: 28%;
-    height: 1.5em;
     border: 3px solid black;
-    font-size: 170%;
-    margin-right: .5em;
+    font-size: 180%;
     border-radius: 8px;
 }
+
+
 .nextButton:hover {
     box-shadow: 0px 0px 5px 0px #ccc;
     background-color: #b36e00;

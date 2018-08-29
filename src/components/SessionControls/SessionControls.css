@@ -17,7 +17,6 @@
 }
 
 .progress { 
-    margin: 0 auto;
     grid-area: progres;
 }
 .interval { 
