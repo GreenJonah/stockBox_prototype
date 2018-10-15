@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 .StockButton button {
     background-color: #2a2a2a;
-    color: #dadada;
+    color: #cacaca;
     width: 100%;
     border-color: black;
     margin-bottom: 4px;
+    padding: 5px;
 }
 
 .StockButton button:hover, .StockButton button:active,
@@ -39,11 +41,11 @@
 }
 
 .StockButton .PercentagePos {
-    background-color: #9ACD32;
-    color: black;
+    background-color: rgb(109, 160, 9);
+    color: whitesmoke;
 }
 
 .StockButton .PercentageNeg {
     background-color: #ff3333;
-    color: black;
+    color: whitesmoke;
 }

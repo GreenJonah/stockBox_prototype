@@ -27,15 +27,23 @@ const progressBar = (props) => {
     let displaySessionDate = formatDate(sessionDate.getMonth() + 1, sessionDate.getDate(),
     sessionDate.getFullYear());;
 
-
-    /* Divide curDateMilli by sessionDateMilli to get percentage 
-       for progress bar */
-    let progress = Math.round(sessionDateMilli / curDateMilli * 100);
+    // Update will create a box over the progress bar that is proportional to the percentage
+    // of the sessionDateMilli to the curDateMilli
+    
+    let update = () => {
+        let nextClick = document.getElementsByClassName('progress');
+        console.log("nextClick: " + nextClick);
+        nextClick.style.width = 50 + '%';
+        //let progress = Math.round(sessionDateMilli / curDateMilli * 100);
+        
+    }
     
     return (
         <div className={classes.wrapper}>
         <div className={classes.pastDate}>{displaySessionDate}</div>
-        <div className={classes.bar}></div>
+        <div onClick={update} className={classes.bar}>
+            <div className={classes.progress}></div>
+        </div>
         <div className={classes.currentDate}>{curDate}</div>
         </div>
     );

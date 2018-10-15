@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One');
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 .title {
-    color: orange;
-    font-family: 'Helvetica bold';
-    font-size: 3em;
+    color: white;
+    font-family: 'Fjalla One';
+    font-size: 400%;
 }
 
 .wrapper {
@@ -14,7 +16,6 @@
 .values {
     border: 3px solid black;
     margin-top: 10px;
-    background-color: green;
     border-radius: 8px;
     width: 50%;
     text-align: center;
@@ -24,12 +25,13 @@
 
 .label {
     font-size: 150%;
-    color: white;
+    font-family: 'Oswald';
+    color: whitesmoke;
     text-align: center;
 }
 
 .green {
-    background-color: green;
+    background-color: rgb(109, 160, 9);
 }
 
 .red {

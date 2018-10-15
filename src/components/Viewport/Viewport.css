@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 .box {
     background-image: linear-gradient(#dadada, #bbbbbb);
 }
@@ -6,12 +7,14 @@
     font-size: 180%;
     padding-left: 20px;
     width: 50%;
-    height: 50px;
+    height: 50%;
+    font-family: 'Oswald';
     display: inline-block;
 }
 
 .title p  {
     display: inline-block;
+    font-family: 'Oswald';
     width: 50px;
     margin-right: 30px;
 }
@@ -23,7 +26,7 @@
     border: solid;
     margin-top: 2%;
     margin-right: 2%;
-    background-color: #9ACD32;
+    background-color: rgb(109, 160, 9);
     color: black;
     font-size: 110%;
 }
@@ -45,10 +48,11 @@
 }
 
 .Prices {
-    background-color: #9ACD32;
+    background-color: rgb(109, 160, 9);
     color: black;
     border-radius: 2px;
     font-size: 120%;
+    font-family: 'Oswald';
     text-align: center;
     border: 3px solid black;
 }
@@ -62,7 +66,7 @@
 }
 
 .Green {
-    background-color: #9ACD32;
+    background-color: rgb(109, 160, 9);
 }
 
 .Red {
@@ -70,19 +74,19 @@
 }
 
 .Trading button{
-    background-color: orange;
+    background-color: white;
     color: black;
     width: 18%;
     border: 3px solid black;
     font-size: 170%;
+    font-family: 'Oswald';
     margin: .1em 50px .2em 50px;
     border-radius: 8px;
 
 }
 .Trading button:hover {
-    background-image: linear-gradient(#ec7f02fd, #ca7e04);
-    box-shadow: 0px 0px 5px 0px rgb(26, 23, 23);
-    background-color: #ff9d00;
+    box-shadow: 0px 0px 5px 0px #ccc;
+    background-color: rgb(170, 165, 165);
 }
 
 .Trading {

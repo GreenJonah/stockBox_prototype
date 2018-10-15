@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 .wrapper {
     display: grid;
     margin: 3% 3% 0% 3%;
@@ -11,6 +12,7 @@
 
 .intervalTitle {
     grid-area: title;
+    font-family: 'Oswald';
     font-size: 185%;
     margin: 0 auto;
 }
@@ -23,9 +25,10 @@
 
 .nextButton {
     grid-area: button;
-    background-color: orange;
+    background-color: white;
     color: black;
     border: 3px solid black;
+    font-family: 'Oswald';
     font-size: 180%;
     border-radius: 8px;
 }
@@ -33,6 +36,6 @@
 
 .nextButton:hover {
     box-shadow: 0px 0px 5px 0px #ccc;
-    background-color: #b36e00;
+    background-color: rgb(170, 165, 165);
 }
 

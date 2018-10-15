@@ -2,18 +2,27 @@
     display: grid;
     margin: 1.5% 2% 0px 2%;
     grid-gap: 2%;
-    font-size: 1.5em;
+    font-family: 'Oswald';
+    font-size: 150%;
     grid-template-columns: auto 1fr auto;
     grid-template-rows: 1fr;
     grid-template-areas: 
     "past bar current";
 }
 
+.progress {
+    width: 1%;
+    height: 100%;
+    background-color: white;
+    text-align: center;
+    line-height: 100%;
+}
+
 .bar {
     grid-area: bar;
     height: 100%;
     width: 100%;
-    background: grey;
+    background: rgb(71, 71, 71);
 }
 
 .pastDate {
