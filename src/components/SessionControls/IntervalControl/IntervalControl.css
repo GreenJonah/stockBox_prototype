@@ -17,10 +17,15 @@
     margin: 0 auto;
 }
 
-.intervalSelect select{
+.intervalSelect {
     grid-area: select; 
-    cursor: pointer;
-    color: orange;
+    text-align-last: center;
+    background-color: white;
+    color: black;
+    border: 3px solid black;
+    font-family: 'Oswald';
+    font-size: 180%;
+    border-radius: 8px;
 }
 
 .nextButton {

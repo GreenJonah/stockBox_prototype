@@ -7,12 +7,22 @@ import ProgressBar from './ProgressBar/ProgressBar';
 
 const sessionSettings = (props) => {
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.title}>SESSION SETTINGS</div>
-            <div className={classes.progress}><ProgressBar/></div>
-            <div className={classes.interval}><IntervalControl/></div>
-            <div className={classes.options}><SessionOptions/></div>
+    <div className={classes.wrapper}>
+        <div className={classes.title}>SESSION SETTINGS</div>
+        <div className={classes.progress}>
+            <ProgressBar
+                sessionDate={props.sessionDate}
+                startDate={props.startDate}
+            />
         </div>
+        <div className={classes.interval}>
+            <IntervalControl 
+                next={props.next}
+                sessionDate={props.sessionDate}
+            />
+        </div>
+        <div className={classes.options}><SessionOptions/></div>
+    </div>
     );
 };
 

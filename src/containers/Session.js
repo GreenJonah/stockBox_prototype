@@ -42,7 +42,9 @@ class Session extends Component {
         stockNet: 350,
         percent: -5,
         gain_loss: -50,
-        logo: "NA"
+        logo: "NA",
+        sessionDate: { month: 'July', day: 20, year: 2010 },
+        startDate: { month: 'July', day: 20, year: 2010 }
     };
 
 
@@ -121,6 +123,13 @@ class Session extends Component {
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };
 
+    dateChangeHandler = (newDate) => {
+        console.log('session date was updated');
+        this.setState( {
+            sessionDate: { month: 'May', day: 22, year: 2012 }
+        } )
+    }
+
     render() {
         let stocks = <p>Data Cannot be loaded</p>;
         if (this.state.market_stocks) {
@@ -158,7 +167,11 @@ class Session extends Component {
                 </div>
                 <div className={classes.stock}>{stocks}</div>
                 <div className={classes.session}>
-                    <SessionSettings className={classes.session}/>
+                    <SessionSettings 
+                        className={classes.session} 
+                        sessionDate={this.state.sessionDate}
+                        startDate={this.state.startDate}
+                        next={this.dateChangeHandler}/>
                 </div>
            </div>
         );

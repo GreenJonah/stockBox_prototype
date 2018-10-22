@@ -16,6 +16,7 @@
     background-color: white;
     text-align: center;
     line-height: 100%;
+    transition: width 200ms ease-in-out;
 }
 
 .bar {

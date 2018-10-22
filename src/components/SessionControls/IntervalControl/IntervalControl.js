@@ -12,7 +12,7 @@ const intervalControl = (props) => {
                 <option value="Month">Month</option>
                 <option value="Finish">Finish</option>
             </select>
-            <button className={classes.nextButton}>Next</button>
+            <button className={classes.nextButton} onClick={props.next}>Next</button>
         </div>
     );
 };
