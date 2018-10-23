@@ -5,12 +5,13 @@ const intervalControl = (props) => {
     return (
         <div className={classes.wrapper}>
         <div className={classes.intervalTitle}>Interval</div> 
-            <select className={classes.intervalSelect} name="Interval">
-                <option value="Hour">Hour</option>
-                <option value="Day">Day</option>
-                <option value="Week">Week</option>
-                <option value="Month">Month</option>
-                <option value="Finish">Finish</option>
+            <select value={props.interval} onChange={props.intervalChange} className={classes.intervalSelect} name="Interval">
+                <option value="hour">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+                <option value="finish">Finish</option>
             </select>
             <button className={classes.nextButton} onClick={props.next}>Next</button>
         </div>

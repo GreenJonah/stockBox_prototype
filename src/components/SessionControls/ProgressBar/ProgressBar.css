@@ -4,7 +4,7 @@
     grid-gap: 2%;
     font-family: 'Oswald';
     font-size: 150%;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 12.5% 75% 12.5%;
     grid-template-rows: 1fr;
     grid-template-areas: 
     "past bar current";
@@ -16,7 +16,7 @@
     background-color: white;
     text-align: center;
     line-height: 100%;
-    transition: width 200ms ease-in-out;
+    transition: width 300ms linear;
 }
 
 .bar {

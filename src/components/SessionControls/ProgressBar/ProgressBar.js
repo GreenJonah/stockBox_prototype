@@ -8,26 +8,20 @@ let formatDate = (month, day, year) => {
 
 const progressBar = (props) => {
     
-    // Make a Current date and format it
+    // Create our three dates
+    let sessionDate = new Date(props.sessionDate);
+    let startDate = new Date(props.startDate);
     let currentDate = new Date();
-    let curDate = formatDate(currentDate.getMonth() + 1, currentDate.getDate(),
-                             currentDate.getFullYear());
-    
-    // Create a session and start date
-    let sessionDate = new Date(`${props.sessionDate.month} ${props.sessionDate.day}, ${props.sessionDate.year}`);
-    let startDate = new Date(`${props.startDate.month} ${props.startDate.day}, ${props.startDate.year}`);
-    
-    // Get milliseconds for session start and todays date.
-    let sessionDateMilli = sessionDate.getTime();
-    let startDateMilli   = startDate.getTime();
-    let curDateMilli     = currentDate.getTime();
 
     // Get the percentage to fill the task bar with
-    let percentage = 100 * (sessionDateMilli - startDateMilli) / (curDateMilli - startDateMilli);
+    let percentage = 100 * (sessionDate - startDate) / (currentDate.getTime() - startDate);
 
-    // Format session date to display it
+    // Format session and current day to display
     let displaySessionDate = formatDate(sessionDate.getMonth() + 1, sessionDate.getDate(),
     sessionDate.getFullYear());;
+
+    let curDate = formatDate(currentDate.getMonth() + 1, currentDate.getDate(),
+    currentDate.getFullYear());
 
     return (
         <div className={classes.wrapper}>

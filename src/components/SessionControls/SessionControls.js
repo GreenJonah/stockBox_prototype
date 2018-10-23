@@ -18,7 +18,8 @@ const sessionSettings = (props) => {
         <div className={classes.interval}>
             <IntervalControl 
                 next={props.next}
-                sessionDate={props.sessionDate}
+                interval={props.interval}
+                intervalChange={props.intervalChange}
             />
         </div>
         <div className={classes.options}><SessionOptions/></div>

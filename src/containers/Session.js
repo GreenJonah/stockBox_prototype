@@ -43,8 +43,9 @@ class Session extends Component {
         percent: -5,
         gain_loss: -50,
         logo: "NA",
-        sessionDate: { month: 'July', day: 20, year: 2010 },
-        startDate: { month: 'July', day: 20, year: 2010 }
+        sessionDate: 1279605600000,
+        startDate:   1279605600000,
+        interval: "hour"
     };
 
 
@@ -123,11 +124,46 @@ class Session extends Component {
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };
 
-    dateChangeHandler = (newDate) => {
-        console.log('session date was updated');
+    dateChangeHandler = () => {
+        let newSessionDate = this.state.sessionDate;
+        let currentDate    = new Date().getTime();
+  
+        switch (this.state.interval) {
+            case "hour":
+                newSessionDate += 3600000;
+                break;
+            case "day":
+                newSessionDate += 86400000;
+                break;
+            case "week":
+                newSessionDate += 604800000;
+                break;
+            case "month":
+                newSessionDate += 2.6280E+9;
+                break;
+            case "year":
+                newSessionDate += 3.1536E+10;
+                break;
+            case "finish":
+                newSessionDate = currentDate;
+                break;
+            default:
+                break;
+        }
+
+        // The new session date exeed the current date
+        if (newSessionDate >= currentDate)
+            newSessionDate = currentDate;
+
         this.setState( {
-            sessionDate: { month: 'May', day: 22, year: 2012 }
-        } )
+            sessionDate: newSessionDate
+        } );
+    }
+
+    intervalChangeHandler = (event) => {
+        this.setState( {
+            interval: event.target.value 
+        } );
     }
 
     render() {
@@ -171,7 +207,9 @@ class Session extends Component {
                         className={classes.session} 
                         sessionDate={this.state.sessionDate}
                         startDate={this.state.startDate}
-                        next={this.dateChangeHandler}/>
+                        interval={this.state.interval}
+                        next={this.dateChangeHandler}
+                        intervalChange={this.intervalChangeHandler}/>
                 </div>
            </div>
         );
