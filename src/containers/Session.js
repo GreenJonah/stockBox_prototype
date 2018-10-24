@@ -151,7 +151,7 @@ class Session extends Component {
                 break;
         }
 
-        // The new session date exeed the current date
+        // The new session date cannot exceed the current date
         if (newSessionDate >= currentDate)
             newSessionDate = currentDate;
 

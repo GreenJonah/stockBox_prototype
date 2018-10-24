@@ -1,14 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald');
 .box {
-    background-image: linear-gradient(#dadada, #bbbbbb);
+    background-color: rgb(71, 71, 71);
 }
 
 .title {
-    font-size: 180%;
+    font-size: 220%;
+    font-family: 'Oswald';
+    color: whitesmoke;
     padding-left: 20px;
     width: 50%;
     height: 50%;
-    font-family: 'Oswald';
     display: inline-block;
 }
 
@@ -33,9 +34,11 @@
 
 .StockInfo {
     margin-top: 5%;
-    width: 11%;
+    font-family: 'Oswald';
+    color: whitesmoke;
+    width: 14%;
     float: right;
-    margin-right: 1%;
+    margin-right: 4%;
 }
 
 .PurchasePrice, .MarketPrice, .GainLoss {
@@ -43,23 +46,24 @@
     height: 10%;
     display: block;
     margin-top: 20px;
-    font-size: 100%;
+    font-size: 130%;
     text-align: center;
 }
 
 .Prices {
     background-color: rgb(109, 160, 9);
-    color: black;
-    border-radius: 2px;
-    font-size: 120%;
+    color: whitesmoke;
+    border-radius: 8px;
+    font-size: 130%;
     font-family: 'Oswald';
     text-align: center;
     border: 3px solid black;
 }
 
 .Green, .Red {
-    color: black;
-    border-radius: 2px;
+    color: whitesmoke;
+    border-radius: 8px;
+    font-family: 'Oswald';
     font-size: 120%;
     text-align: center;
     border: 3px solid black;
@@ -73,6 +77,10 @@
     background-color: #ff3333;
 }
 
+.Trading {
+    margin-left: 28%;
+}
+
 .Trading button{
     background-color: white;
     color: black;
@@ -80,7 +88,7 @@
     border: 3px solid black;
     font-size: 170%;
     font-family: 'Oswald';
-    margin: .1em 50px .2em 50px;
+    margin: 1% 50px 3% 50px;
     border-radius: 8px;
 
 }
@@ -89,7 +97,4 @@
     background-color: rgb(170, 165, 165);
 }
 
-.Trading {
-    margin-left: 28%;
-    margin-top: .1em;
-}
+

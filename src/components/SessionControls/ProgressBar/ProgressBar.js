@@ -13,7 +13,7 @@ const progressBar = (props) => {
     let startDate = new Date(props.startDate);
     let currentDate = new Date();
 
-    // Get the percentage to fill the task bar with
+    // Get the percentage to fill the task bar
     let percentage = 100 * (sessionDate - startDate) / (currentDate.getTime() - startDate);
 
     // Format session and current day to display

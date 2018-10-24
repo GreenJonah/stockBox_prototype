@@ -6,7 +6,7 @@ const sessionOptions = (props) => {
         <div className={classes.wrapper}>
             <div className={classes.title}>Session Options</div>
             <button className={classes.save}>Save</button>
-            <button className={classes.quit}>End</button>
+            <button className={classes.load}>Load</button>
         </div>
     );
 };

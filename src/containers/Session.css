@@ -2,7 +2,7 @@
     background-color: black;
     display: grid;
     grid-template-columns: 15% 70% 15%;
-    grid-template-rows: repeat(7, auto);
+    grid-template-rows: repeat(7, 14.28%);
     grid-template-areas: 
     "port port search"
     "port port stock"
