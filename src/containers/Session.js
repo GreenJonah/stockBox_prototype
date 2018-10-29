@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import axios from '../axios-orders';
+import React, { Component } from 'react';
+import { firebaseURL, iextradingURL } from '../axios-service';
 import Portfolio from '../components/Portfolio/Portfolio';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SessionSettings from '../components/SessionControls/SessionControls';
@@ -7,28 +7,43 @@ import Stocks from '../components/Stocks/Stocks';
 import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
 import classes from './Session.css';
+import * as FirebaseServices from '../SharedServices/FirebaseServices';
 
 class Session extends Component {
+
+
+    // CONTAINER
+
+    // SEARCH BAR
+    // type in symbol
+    // Search through list of stock symbols
+    // If exists among list And is part of the owned stocks then show that stock
+    // If exists among list And is not part of owned stocks then make api call, show that stock
+    // If does not exist among list, make api call, show stock else display no stock found
+
+    // Symbols array for searching
+    // market stocks for the ones you looked at on that day, if you go back to them, the api does not have to look them up again
+    //    unless it is on a new day and needs to update the data
+    // Owned stock will be initially right away, and will need to be updated on every new session change, this will have to use the milliseconds date
+    //   if not the same as the 
 
     // OUR OWNED STOCK OBJECTS WILL LOOK LIKE THIS
     // owned_stock: {
     //     symbol: "aapl",
+    //     purchase_date: 129329343243,
     //     purchase_price: 160,
-    //     gain_or_loss: 8
-    // }
-
-    // OUR MARKET STOCK OBJECTS WILL LOOK LIKE THIS
-    // market_stock: {
-    //     symbol: "aapl",
-    //     latestPrice: 168.35,
+    //     purhcase_count: 3,
+    //     purchase: true,
+    //     latest_price: 168,
+    //     gain_or_loss: 8,
     //     changePercent: 0.01026,
-    //     change: 1.71,     // Change in dollars
+    //     change: 1.71
     // }
 
     state = {
         error: false,
         owned_stocks: null,
-        market_stocks: null,
+        symbols: null,
         owned_stock_count: 0,
         viewport_stock: {
             symbol: "",
@@ -44,69 +59,61 @@ class Session extends Component {
         gain_loss: -50,
         logo: "NA",
         sessionDate: 1279605600000,
-        startDate:   1279605600000,
+        startDate: 1279605600000,
         interval: "hour"
     };
 
 
-
     componentDidMount() {
-        // let symbol = this.state.owned_stocks[1].owned_stock.symbol;
-        // axios.get('/stock/' + symbol + '/quote')
-        //     .then(response => {
-        //         this.setState({market_stock: response.data});
-        //         console.log(response.data)
-        //     })
-        //     .catch(error => {
-        //         this.setState({error: true})
-        //     });
 
-        axios.get("https://stock-box-prototype.firebaseio.com/stocks.json")
+        FirebaseServices.getAllStockDataFromFirebase()
             .then(response => {
-                let market = [];
-                let owned = [];
-
-                Object.keys(response.data.market_stocks).forEach(function(key) {
-                    market.push(response.data.market_stocks[key])
-                });
-
-                Object.keys(response.data.owned_stocks).forEach(function(key) {
-                    owned.push(response.data.owned_stocks[key])
-                });
-
+                console.log("MARKET IS THIS REAL?: ", response);
                 this.setState({
-                    market_stocks: market, owned_stocks: owned
+                    owned_stocks: response
                 });
             })
             .catch(error => {
-                this.setState({error: true})
-            });
+                this.setState({ error: true })
+            });;
+
+        FirebaseServices.getAllSymbolDataFromFirebase()
+            .then(response => {
+                console.log("SYMBOL Data: ", response);
+                this.setState({
+                    symbols: response
+                });
+            })
+            .catch(error => {
+                this.setState({ error: true })
+            });;
     }
 
     displayStock = (symbol) => {
-        console.log(this.state.market_stocks);
-        console.log(this.state.owned_stocks);
-        console.log(symbol);
 
-        let stock = null;
-        const owned = this.state.owned_stocks;
-        for (let i = 0; i < owned.length; i++) {
-            if (owned[i].symbol === symbol) {
-                stock = owned[i];
-            }
-        }
-        console.log(stock);
-
-        this.setState({viewport_stock: stock});
-        this.setState({graph_data: stock.symbol});
-
-        axios.get("/stock/" + symbol + "/logo")
+        iextradingURL.get("/stock/" + symbol + "/logo")
             .then(response => {
-                this.setState({logo: response.data.url});
+                console.log(this.state.owned_stocks);
+                console.log(symbol);
+
+                let stock = null;
+                const owned = [
+                    ...this.state.owned_stocks
+                ];
+                console.log(owned, " length: " + owned.length);
+                for (let i = 0; i < owned.length; i++) {
+                    if (owned[i].symbol === symbol) {
+                        this.setState({ viewport_stock: owned[i] });
+                        this.setState({ graph_data: symbol });
+                        console.log(owned[i]);
+                    }
+                }
+
+                this.setState({ logo: response.data.url });
                 console.log(response.data);
             })
             .catch(error => {
-                this.setState({error: true})
+                this.setState({ error: true })
             });
     };
 
@@ -118,16 +125,16 @@ class Session extends Component {
             gain_or_loss: 0,
             marketPrice: 0
         };
-        this.setState({viewport_stock: obj});
-        this.setState({graph_data: "Portfolio"});
+        this.setState({ viewport_stock: obj });
+        this.setState({ graph_data: "Portfolio" });
 
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };
 
     dateChangeHandler = () => {
         let newSessionDate = this.state.sessionDate;
-        let currentDate    = new Date().getTime();
-  
+        let currentDate = new Date().getTime();
+
         switch (this.state.interval) {
             case "hour":
                 newSessionDate += 3600000;
@@ -155,63 +162,63 @@ class Session extends Component {
         if (newSessionDate >= currentDate)
             newSessionDate = currentDate;
 
-        this.setState( {
+        this.setState({
             sessionDate: newSessionDate
-        } );
+        });
     }
 
     intervalChangeHandler = (event) => {
-        this.setState( {
-            interval: event.target.value 
-        } );
+        this.setState({
+            interval: event.target.value
+        });
     }
 
     render() {
         let stocks = <p>Data Cannot be loaded</p>;
-        if (this.state.market_stocks) {
+        if (this.state.owned_stocks) {
             stocks = <Stocks
                 stockDisplayed={this.displayStock}
-                market_stocks={this.state.market_stocks}
+                owned_stocks={this.state.owned_stocks}
             />
         }
 
         return (
-           <div className={classes.wrapper}>
-               <div className={classes.search}><SearchBar/></div>
-               <div className={classes.port}> 
-                <Portfolio
-                    portfolio={this.state.portfolio}
-                    buyPower={this.state.buyPower}
-                    stockNet={this.state.stockNet}
-                    percent={this.state.percent}
-                    gain_loss={this.state.gain_loss}
-                />
+            <div className={classes.wrapper}>
+                <div className={classes.search}><SearchBar /></div>
+                <div className={classes.port}>
+                    <Portfolio
+                        portfolio={this.state.portfolio}
+                        buyPower={this.state.buyPower}
+                        stockNet={this.state.stockNet}
+                        percent={this.state.percent}
+                        gain_loss={this.state.gain_loss}
+                    />
                 </div>
                 <div className={classes.tool}>
-                    <Tools/>
+                    <Tools />
                 </div>
                 <div className={classes.view}>
-                <Viewport
-                   symbol={this.state.viewport_stock.symbol}
-                   purchasePrice={this.state.viewport_stock.purchasePrice}
-                   marketPrice={this.state.viewport_stock.marketPrice}
-                   gain_or_loss={this.state.viewport_stock.gain_or_loss}
-                   graph_data={this.state.graph_data}
-                   display_porfolio={() => this.displayPortfolio()}
-                   logo={this.state.logo}
-                />
+                    <Viewport
+                        symbol={this.state.viewport_stock.symbol}
+                        purchasePrice={this.state.viewport_stock.purchasePrice}
+                        marketPrice={this.state.viewport_stock.marketPrice}
+                        gain_or_loss={this.state.viewport_stock.gain_or_loss}
+                        graph_data={this.state.graph_data}
+                        display_porfolio={() => this.displayPortfolio()}
+                        logo={this.state.logo}
+                    />
                 </div>
                 <div className={classes.stock}>{stocks}</div>
                 <div className={classes.session}>
-                    <SessionSettings 
-                        className={classes.session} 
+                    <SessionSettings
+                        className={classes.session}
                         sessionDate={this.state.sessionDate}
                         startDate={this.state.startDate}
                         interval={this.state.interval}
                         next={this.dateChangeHandler}
-                        intervalChange={this.intervalChangeHandler}/>
+                        intervalChange={this.intervalChangeHandler} />
                 </div>
-           </div>
+            </div>
         );
     }
 }
