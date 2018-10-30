@@ -111,6 +111,11 @@ class Session extends Component {
                 }
 
                 this.setState({ logo: response.data.url });
+                
+                // Send graph its color
+                let status = this.state.viewport_stock.gain_or_loss;
+                this.getChartData(status);
+
                 console.log(response.data);
             })
             .catch(error => {
@@ -122,8 +127,11 @@ class Session extends Component {
         this.getChartData();
       } 
 
-    getChartData(){
+    getChartData(status){
         // Ajax calls here
+        let chartColor = 'rgb(109, 160, 9)';
+        if (status < 0)
+            chartColor = '#ff3333'
         this.setState({
           chartData:{
             labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
@@ -138,6 +146,7 @@ class Session extends Component {
                   105162,
                   95072
                 ],
+                backgroundColor: chartColor
               }
             ]
           }
@@ -154,6 +163,10 @@ class Session extends Component {
         };
         this.setState({ viewport_stock: obj });
         this.setState({ graph_data: "Portfolio" });
+
+        // Send graph its color
+        let status = this.state.gain_loss;
+        this.getChartData(status);
 
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };

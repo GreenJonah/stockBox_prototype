@@ -16,12 +16,10 @@ const viewport = (props) => {
     let symbol_upper = props.symbol.toUpperCase();
 
     if (props.symbol !== "") {
-        let graph_color = "green";
         let box_color = classes.Green;
-        if (props.gain_or_loss < 0) {
-            graph_color = "red";
+        if (props.gain_or_loss < 0) 
             box_color = classes.Red;
-        }
+            
         let logo_tag = props.logo;
         if (props.logo !== "NA") {
             logo_tag = <img src={props.logo} alt="LOGO!!" height="50" width="50"/>
@@ -36,7 +34,6 @@ const viewport = (props) => {
             <div className={classes.graph}>
             <Graph
                 type={props.graph_data}
-                color={graph_color}
                 chartData={props.chartData}
             />
             </div>
