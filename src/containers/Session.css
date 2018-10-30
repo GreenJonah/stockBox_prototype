@@ -1,8 +1,11 @@
 .wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute; 
     background-color: black;
     display: grid;
-    grid-template-columns: 15% 70% 15%;
-    grid-template-rows: repeat(7, 14.28%);
+    grid-template-columns: 13% 74% 13%;
+    grid-template-rows: 10% repeat(6, 1fr);
     grid-template-areas: 
     "port port search"
     "port port stock"

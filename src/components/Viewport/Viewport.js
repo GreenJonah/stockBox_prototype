@@ -1,14 +1,17 @@
 import React from 'react';
-import Graph from '../Viewport/Graph/Graph';
+import Graph from './Graph/Graph';
 import Aux from '../../hoc/Auxx';
 import classes from './Viewport.css';
 
 const viewport = (props) => {
-
-    let view = <div className={classes.box}>
-                    <p className={classes.title}>PORTFOLIO</p>
-        <button onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
-                    <Graph type={props.graph_data}/>
+    let view = <div className={classes.box1}>
+                    <div className={classes.title}>PORTFOLIO</div>
+                    <div className={classes.miniWrapper}>
+                        <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
+                    </div>
+                    <div className={classes.graph}>
+                        <Graph chartData={props.chartData}/>
+                    </div>
                 </div>;
     let symbol_upper = props.symbol.toUpperCase();
 
@@ -24,16 +27,19 @@ const viewport = (props) => {
             logo_tag = <img src={props.logo} alt="LOGO!!" height="50" width="50"/>
         }
 
-        view = <div className={classes.box}>
-            <div className={classes.title}>
-                <p>{symbol_upper}</p>
-                <p>{logo_tag}</p>
+        view = <div className={classes.box2}>
+            <div className={classes.title}>{symbol_upper}</div>
+            <div className={classes.logo}>{logo_tag}</div>
+            <div className={classes.miniWrapper}>
+                <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
             </div>
-            <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
+            <div className={classes.graph}>
             <Graph
                 type={props.graph_data}
                 color={graph_color}
+                chartData={props.chartData}
             />
+            </div>
             <div className={classes.StockInfo}>
                 <div className={classes.PurchasePrice}>
                     Purchase Price

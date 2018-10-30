@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Graph.css';
+import {Line} from 'react-chartjs-2';
 
 const graph = (props) => {
 
@@ -9,10 +10,14 @@ const graph = (props) => {
     }
     // props.type
     return (
-        <div className={[classes.GraphBox, ClassColor].join(' ')}>
-            <div className={classes.Line}>
-
-            </div>
+        <div className={classes.GraphBox}>
+        <Line
+          data={props.chartData}
+          options={{
+              responsive: true,
+              maintainAspectRatio: false,
+          }}
+        />
         </div>
     );
 };

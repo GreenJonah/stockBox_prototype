@@ -60,7 +60,8 @@ class Session extends Component {
         logo: "NA",
         sessionDate: 1279605600000,
         startDate: 1279605600000,
-        interval: "hour"
+        interval: "hour",
+        chartData:{}
     };
 
 
@@ -116,6 +117,32 @@ class Session extends Component {
                 this.setState({ error: true })
             });
     };
+
+    componentWillMount(){
+        this.getChartData();
+      } 
+
+    getChartData(){
+        // Ajax calls here
+        this.setState({
+          chartData:{
+            labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
+            datasets:[
+              {
+                label:'Population',
+                data:[
+                  617594,
+                  181045,
+                  153060,
+                  106519,
+                  105162,
+                  95072
+                ],
+              }
+            ]
+          }
+        });
+      }
 
     displayPortfolio = () => {
 
@@ -204,6 +231,7 @@ class Session extends Component {
                         marketPrice={this.state.viewport_stock.marketPrice}
                         gain_or_loss={this.state.viewport_stock.gain_or_loss}
                         graph_data={this.state.graph_data}
+                        chartData={this.state.chartData}
                         display_porfolio={() => this.displayPortfolio()}
                         logo={this.state.logo}
                     />
