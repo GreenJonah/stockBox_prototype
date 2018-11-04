@@ -1,11 +1,11 @@
 .wrapper {
     display: grid;
-    margin: 1.5% 2% 0px 2%;
+    padding: 1.5% 2% 0px 2%;
     grid-gap: 2%;
     font-family: 'Oswald';
     font-size: 150%;
     grid-template-columns: 12.5% 75% 12.5%;
-    grid-template-rows: 1fr;
+    grid-template-rows: 100%;
     grid-template-areas: 
     "past bar current";
 }

@@ -1,51 +1,87 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald');
-.box {
+
+.box1 {
+    width: 100%;
+    height: 100%;
     background-color: rgb(71, 71, 71);
+    display: grid;
+    grid-template-columns: repeat(8, 12.5%);
+    grid-template-rows: repeat(8, 12.5%);
+    grid-template-areas: 
+    "title .     .     .     .     .     .     miniGraph"
+    "title graph graph graph graph graph graph miniGraph"
+    ".     graph graph graph graph graph graph ."
+    ".     graph graph graph graph graph graph ."
+    ".     graph graph graph graph graph graph ."
+    ".     graph graph graph graph graph graph ."
+    ".     graph graph graph graph graph graph ."
+    ".     .     .     .     .     .     .     .";
+}
+
+.box2 {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(71, 71, 71);
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-areas: 
+    "logo  .     .     .     .     .     .     miniGraph"
+    "title graph graph graph graph graph graph miniGraph"
+    ".     graph graph graph graph graph graph info"
+    ".     graph graph graph graph graph graph info"
+    ".     graph graph graph graph graph graph info"
+    ".     graph graph graph graph graph graph info"
+    ".     graph graph graph graph graph graph info"
+    ". . trading trading trading trading . .";
 }
 
 .title {
-    font-size: 220%;
+    grid-area: title;
+    font-size: 250%;
     font-family: 'Oswald';
     color: whitesmoke;
-    padding-left: 20px;
-    width: 50%;
-    height: 50%;
-    display: inline-block;
+    margin-top: 1%;
+    margin-left: 2%;
 }
 
-.title p  {
-    display: inline-block;
-    font-family: 'Oswald';
-    width: 50px;
-    margin-right: 30px;
+.logo  {
+    grid-area: logo;
+}
+
+.graph {
+    grid-area: graph;
+    padding: 1%;
+}
+
+.miniWrapper {
+    grid-area: miniGraph;
+    width: 130px;
+    height: 100px;
 }
 
 .MiniGraph {
-    float: right;
-    width: 3%;
-    height: 5%;
-    border: solid;
+
+    height: 40%;
+    width: 30%;
     margin-top: 2%;
     margin-right: 2%;
+    float: right; 
+    border: solid;
     background-color: rgb(109, 160, 9);
     color: black;
     font-size: 110%;
 }
 
 .StockInfo {
-    margin-top: 5%;
+    grid-area: info;
     font-family: 'Oswald';
     color: whitesmoke;
-    width: 14%;
-    float: right;
-    margin-right: 4%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .PurchasePrice, .MarketPrice, .GainLoss {
-    width: 100%;
-    height: 10%;
-    display: block;
-    margin-top: 20px;
     font-size: 130%;
     text-align: center;
 }
@@ -78,19 +114,20 @@
 }
 
 .Trading {
-    margin-left: 28%;
+    grid-area: trading;
+    margin: 2% auto 2% auto;
+    width: 100%;
 }
 
 .Trading button{
     background-color: white;
     color: black;
-    width: 18%;
+    width: 45%;
+    margin-right: 2%;
     border: 3px solid black;
     font-size: 170%;
     font-family: 'Oswald';
-    margin: 1% 50px 3% 50px;
     border-radius: 8px;
-
 }
 .Trading button:hover {
     box-shadow: 0px 0px 5px 0px #ccc;
