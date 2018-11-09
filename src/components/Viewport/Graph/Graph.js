@@ -7,7 +7,7 @@ const graph = (props) => {
     return (
         <div className={classes.GraphBox}>
         <Line
-          data={props.chartData}
+          data={props.graphData}
           options={{
               responsive: true,
               maintainAspectRatio: false,

@@ -5,11 +5,11 @@
     height: 100%;
     background-color: rgb(71, 71, 71);
     display: grid;
-    grid-template-columns: repeat(8, 12.5%);
-    grid-template-rows: repeat(8, 12.5%);
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
     grid-template-areas: 
-    "title .     .     .     .     .     .     miniGraph"
-    "title graph graph graph graph graph graph miniGraph"
+    "title graph graph graph graph graph graph ."
+    ".     graph graph graph graph graph graph ."
     ".     graph graph graph graph graph graph ."
     ".     graph graph graph graph graph graph ."
     ".     graph graph graph graph graph graph ."
@@ -26,14 +26,14 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
     grid-template-areas: 
-    "logo  .     .     .     .     .     .     miniGraph"
-    "title graph graph graph graph graph graph miniGraph"
+    "logo  graph graph graph graph graph graph miniGraph"
+    "title graph graph graph graph graph graph info"
     ".     graph graph graph graph graph graph info"
     ".     graph graph graph graph graph graph info"
     ".     graph graph graph graph graph graph info"
     ".     graph graph graph graph graph graph info"
     ".     graph graph graph graph graph graph info"
-    ". . trading trading trading trading . .";
+    ".     .     trading trading trading trading . .";
 }
 
 .title {
@@ -56,13 +56,12 @@
 
 .miniWrapper {
     grid-area: miniGraph;
-    width: 130px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
 }
 
 .MiniGraph {
-
-    height: 40%;
+    height: 70%;
     width: 30%;
     margin-top: 2%;
     margin-right: 2%;
@@ -77,8 +76,7 @@
     grid-area: info;
     font-family: 'Oswald';
     color: whitesmoke;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin: auto auto auto auto;
 }
 
 .PurchasePrice, .MarketPrice, .GainLoss {
@@ -115,8 +113,8 @@
 
 .Trading {
     grid-area: trading;
-    margin: 2% auto 2% auto;
-    width: 100%;
+    margin: 1% auto 1% auto;
+    width: 90%;
 }
 
 .Trading button{

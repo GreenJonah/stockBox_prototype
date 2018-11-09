@@ -4,7 +4,7 @@
     position: absolute; 
     background-color: black;
     display: grid;
-    grid-template-columns: 13% 74% 13%;
+    grid-template-columns: 14% 72% 14%;
     grid-template-rows: 10% repeat(6, 1fr);
     grid-template-areas: 
     "port port search"

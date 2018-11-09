@@ -1,7 +1,6 @@
 .wrapper {
     display: grid;
-    padding: 1.5% 2% 0px 2%;
-    grid-gap: 2%;
+    padding: 2% 2% 0% 2%;
     font-family: 'Oswald';
     font-size: 150%;
     grid-template-columns: 12.5% 75% 12.5%;
@@ -11,25 +10,31 @@
 }
 
 .progress {
-    width: 1%;
+    width: 0%;
     height: 100%;
     background-color: white;
     text-align: center;
     line-height: 100%;
-    transition: width 300ms linear;
+    transition: width 400ms linear;
 }
 
 .bar {
     grid-area: bar;
+    margin-left: auto;
+    margin-right: auto;
     height: 100%;
     width: 100%;
     background: rgb(71, 71, 71);
 }
 
 .pastDate {
+    margin-left: auto;
+    margin-right: auto;
     grid-area: past;
 }
 
 .currentDate {
+    margin-left: auto;
+    margin-right: auto;
     grid-area: current;
 }

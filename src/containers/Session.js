@@ -58,10 +58,11 @@ class Session extends Component {
         percent: -5,
         gain_loss: -50,
         logo: "NA",
-        sessionDate: 1279605600000,
-        startDate: 1279605600000,
+        sessionDate: 1411192800000,
+        startDate: 1411192800000,
         interval: "hour",
-        chartData:{}
+        stockGraph:{},
+        portfolioGraph:{}
     };
 
 
@@ -111,10 +112,7 @@ class Session extends Component {
                 }
 
                 this.setState({ logo: response.data.url });
-                
-                // Send graph its color
-                let status = this.state.viewport_stock.gain_or_loss;
-                this.getChartData(status);
+                this.getStockGraph();
 
                 console.log(response.data);
             })
@@ -124,34 +122,87 @@ class Session extends Component {
     };
 
     componentWillMount(){
-        this.getChartData();
+        this.getPortfolioGraph();
       } 
 
-    getChartData(status){
-        // Ajax calls here
-        let chartColor = 'rgb(109, 160, 9)';
-        if (status < 0)
-            chartColor = '#ff3333'
+    getPortfolioGraph(){
+        let graphColor = 'rgb(109, 160, 9)';
+        if (this.state.gain_loss < 0)
+            graphColor = '#ff3333'
+            
         this.setState({
-          chartData:{
-            labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
-            datasets:[
-              {
-                label:'Population',
-                data:[
-                  617594,
-                  181045,
-                  153060,
-                  106519,
-                  105162,
-                  95072
-                ],
-                backgroundColor: chartColor
-              }
-            ]
-          }
+            portfolioGraph:{
+                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June'],
+                datasets:[
+                {
+                    label:'Gains/Losses',
+                    data:[
+                    60,
+                    85,
+                    45,
+                    21,
+                    5,
+                    -50
+                    ],
+                    backgroundColor: graphColor,
+                    borderColor: 'rgb(0, 0, 0)',
+                    borderWidth: 1,
+                    lineTension: 0,
+                    pointRadius: 2,
+                    fill: 'start',
+                }
+                ]
+            }
         });
-      }
+    }
+
+    getStockGraph(){
+        // https://iextrading.com/developer/docs/#chart
+        // Get stocks data for the past 5 years
+        iextradingURL.get("/stock/" + this.state.viewport_stock.symbol + "/chart/5y") 
+            .then(response => {
+
+            let stockHistory = response.data;
+            let dates = [];
+            let stockData = [];
+            console.log('HERe', stockHistory)
+            // Set the past 5 years of data but stop at the session date
+            for(let i = 0; i < stockHistory.length; ++i)
+            {
+                let date = new Date(stockHistory[i].date)
+                if (date.getTime() <= this.state.sessionDate)
+                {
+                    dates[i]     = stockHistory[i].label;
+                    stockData[i] = stockHistory[i].high;
+                }
+                else   
+                    break;
+            }
+
+            // set the graphs color
+            let graphColor = 'rgb(109, 160, 9)';
+            if ( this.state.viewport_stock.gain_or_loss < 0 )
+                graphColor = '#ff3333'
+
+            this.setState({
+                stockGraph:{    
+                    labels: dates,
+                    datasets:[
+                    {
+                        label: '1 Year',
+                        data: stockData,
+                        backgroundColor: graphColor,
+                        borderColor: 'rgb(0, 0, 0)',
+                        borderWidth: 1,
+                        lineTension: 0,
+                        pointRadius: 2,
+                        fill: 'start',
+                    }
+                    ],
+                }
+            });
+        });
+    }
 
     displayPortfolio = () => {
 
@@ -163,10 +214,6 @@ class Session extends Component {
         };
         this.setState({ viewport_stock: obj });
         this.setState({ graph_data: "Portfolio" });
-
-        // Send graph its color
-        let status = this.state.gain_loss;
-        this.getChartData(status);
 
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };
@@ -205,6 +252,9 @@ class Session extends Component {
         this.setState({
             sessionDate: newSessionDate
         });
+        // reset the graphs
+        this.getPortfolioGraph();
+        this.getStockGraph();
     }
 
     intervalChangeHandler = (event) => {
@@ -244,7 +294,8 @@ class Session extends Component {
                         marketPrice={this.state.viewport_stock.marketPrice}
                         gain_or_loss={this.state.viewport_stock.gain_or_loss}
                         graph_data={this.state.graph_data}
-                        chartData={this.state.chartData}
+                        stockGraph={this.state.stockGraph}
+                        portfolioGraph={this.state.portfolioGraph}
                         display_porfolio={() => this.displayPortfolio()}
                         logo={this.state.logo}
                     />
