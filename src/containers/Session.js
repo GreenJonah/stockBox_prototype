@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { firebaseURL, iextradingURL } from '../axios-service';
 import Portfolio from '../components/Portfolio/Portfolio';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SessionSettings from '../components/SessionControls/SessionControls';
 import Stocks from '../components/Stocks/Stocks';
+import axios from 'axios';
 import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
 import classes from './Session.css';
-import * as FirebaseServices from '../SharedServices/FirebaseServices';
+import * as apiServices from '../SharedServices/api-services';
 
 class Session extends Component {
 
@@ -37,7 +37,8 @@ class Session extends Component {
     //     latest_price: 168,
     //     gain_or_loss: 8,
     //     changePercent: 0.01026,
-    //     change: 1.71
+    //     change: 1.71,
+    //     logo: "https://storage.googleapis.com/iex/api/logos/AAPL.png"
     // }
 
     state = {
@@ -67,9 +68,9 @@ class Session extends Component {
 
     componentDidMount() {
 
-        FirebaseServices.getAllStockDataFromFirebase()
+        apiServices.getAllStockData()
             .then(response => {
-                console.log("MARKET IS THIS REAL?: ", response);
+                console.log("MARKET data: ", response);
                 this.setState({
                     owned_stocks: response
                 });
@@ -78,7 +79,7 @@ class Session extends Component {
                 this.setState({ error: true })
             });;
 
-        FirebaseServices.getAllSymbolDataFromFirebase()
+        apiServices.getAllSymbolData()
             .then(response => {
                 console.log("SYMBOL Data: ", response);
                 this.setState({
@@ -92,35 +93,21 @@ class Session extends Component {
 
     displayStock = (symbol) => {
 
-        iextradingURL.get("/stock/" + symbol + "/logo")
-            .then(response => {
-                console.log(this.state.owned_stocks);
-                console.log(symbol);
-
-                let stock = null;
-                const owned = [
-                    ...this.state.owned_stocks
-                ];
-                console.log(owned, " length: " + owned.length);
-                for (let i = 0; i < owned.length; i++) {
-                    if (owned[i].symbol === symbol) {
-                        this.setState({ viewport_stock: owned[i] });
-                        this.setState({ graph_data: symbol });
-                        console.log(owned[i]);
-                    }
-                }
-
-                this.setState({ logo: response.data.url });
-                
-                // Send graph its color
-                let status = this.state.viewport_stock.gain_or_loss;
-                this.getChartData(status);
-
-                console.log(response.data);
-            })
-            .catch(error => {
-                this.setState({ error: true })
-            });
+        const owned = [
+            ...this.state.owned_stocks
+        ];
+        console.log(owned, " length: " + owned.length);
+        for (let i = 0; i < owned.length; i++) {
+            if (owned[i].symbol === symbol) {
+                this.setState({ viewport_stock: owned[i] });
+                this.setState({ graph_data: symbol });
+                this.setState({ logo: owned[i].logo});
+                console.log(owned[i]);
+            }
+        }
+    
+        let status = this.state.viewport_stock.gain_or_loss;
+        this.getChartData(status);
     };
 
     componentWillMount(){
