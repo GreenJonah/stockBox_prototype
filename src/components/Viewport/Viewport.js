@@ -5,12 +5,9 @@ import classes from './Viewport.css';
 
 const viewport = (props) => {
     let view = <div className={classes.box1}>
-                    <div className={classes.title}>PORTFOLIO</div>
-                    <div className={classes.miniWrapper}>
-                        <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
-                    </div>
+                    <div className={classes.title}>PORTFOLIO</div>    
                     <div className={classes.graph}>
-                        <Graph chartData={props.chartData}/>
+                        <Graph graphData={props.portfolioGraph}/>
                     </div>
                 </div>;
     let symbol_upper = props.symbol.toUpperCase();
@@ -34,7 +31,7 @@ const viewport = (props) => {
             <div className={classes.graph}>
             <Graph
                 type={props.graph_data}
-                chartData={props.chartData}
+                graphData={props.stockGraph}
             />
             </div>
             <div className={classes.StockInfo}>

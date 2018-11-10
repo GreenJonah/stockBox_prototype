@@ -4,15 +4,5 @@
     border-radius: 8px;
     border: 3px solid black;
     display: inline-block;
-    transition: width 300ms linear;
 }
 
-.Red {
-    background-color: #ff3333;
-    border: solid;
-}
-
-.Green {
-    background-color: rgb(109, 160, 9);
-    border: solid;
-}
