@@ -18,6 +18,43 @@ const getStockLogoURLFromExternalAPI = async (symbol) => {
     return logoURL;
 }
 
+// GET STOCK DATA FROM EXTERNAL API
+const getStockDataFromExternalAPI = async (symbol, date) => {
+    
+    let stock = null;
+
+    await iextradingURL.get("/stock/" + symbol + "/chart/date/" + date)
+        .then(response => {
+            console.log("Response length: " + response.data.length);
+            let index = response.data.length - 1;
+            console.log("Object: ", response.data[index]);
+            stock = response.data[index]
+        })
+        .catch(error => {
+            console.log("FAILED TO GET STOCK FROM EXTERNAL API SOURCE")
+        });
+
+    return stock;
+}
+
+// SHOULD BE DELETED EVENTUALLY
+const getStockChart = async (symbol) => {
+    
+    let data = null;
+
+    await iextradingURL.get("/stock/" + symbol + "/chart/5y")
+        .then(response => {
+            data = response.data
+        })
+        .catch(error => {
+            console.log("FAILED TO GET STOCK FROM EXTERNAL API SOURCE")
+        });
+
+    return data;
+}
+
 module.exports = {
-    getStockLogoURLFromExternalAPI
+    getStockLogoURLFromExternalAPI,
+    getStockDataFromExternalAPI,
+    getStockChart
 };

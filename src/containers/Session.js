@@ -45,6 +45,8 @@ class Session extends Component {
         error: false,
         owned_stocks: null,
         symbols: null,
+        filteredSymbols: [],
+        inputValue: "",
         owned_stock_count: 0,
         viewport_stock: {
             symbol: "",
@@ -93,20 +95,20 @@ class Session extends Component {
     }
 
     displayStock = (symbol) => {
+
         const owned = [
             ...this.state.owned_stocks
         ];
         console.log(owned, " length: " + owned.length);
         for (let i = 0; i < owned.length; i++) {
             if (owned[i].symbol === symbol) {
-                this.setState({ viewport_stock: owned[i] });
+                this.setState({ viewport_stock: owned[i]});
                 this.setState({ graph_data: symbol });
                 this.setState({ logo: owned[i].logo});
+                this.getStockGraph(owned[i].symbol);
                 console.log(owned[i]);
             }
         }
-    
-        this.getStockGraph();
     };
 
     componentWillMount(){
@@ -144,13 +146,13 @@ class Session extends Component {
         });
     }
 
-    getStockGraph(){
+    getStockGraph = async (symbol) => {
         // https://iextrading.com/developer/docs/#chart
         // Get stocks data for the past 5 years
-        axios.get("https://api.iextrading.com/1.0/stock/" + this.state.viewport_stock.symbol + "/chart/5y") 
+        await apiServices.getFiveYearChart(symbol)
             .then(response => {
-
-            let stockHistory = response.data;
+     
+            let stockHistory = response;
             let dates = [];
             let stockData = [];
             console.log('HERe', stockHistory)
@@ -242,13 +244,47 @@ class Session extends Component {
         });
         // reset the graphs
         this.getPortfolioGraph();
-        this.getStockGraph();
+        this.getStockGraph(this.state.viewport_stock.symbol);
     }
 
     intervalChangeHandler = (event) => {
         this.setState({
             interval: event.target.value
         });
+    }
+
+    filterStock = (event) => {
+
+        if (event.target.value) {
+            const term = event.target.value;
+            const symbols = [
+                ...this.state.symbols
+            ]
+
+            let filteredArray = symbols.filter(
+                symbol => symbol.symbol.toLowerCase().includes(term.toLowerCase())
+            );
+
+            this.setState({
+                filteredSymbols: filteredArray,
+                inputValue: term
+            });
+        } else if (this.state.filteredSymbols.length > 0) {
+            this.setState({
+                filteredSymbols: [],
+                inputValue: ""
+            })
+        }
+    }
+
+    stockChosen = (symbol) => {
+
+        this.setState({
+            filteredSymbols: [],
+            inputValue: ""
+        });
+
+        this.displayStock(symbol);
     }
 
     render() {
@@ -259,10 +295,20 @@ class Session extends Component {
                 owned_stocks={this.state.owned_stocks}
             />
         }
+        let searchBar = <p>Loading Search Bar</p>;
+
+        if (this.state.symbols) {
+            searchBar = <SearchBar
+                value={this.state.inputValue}
+                chooseStock = {this.stockChosen}
+                typeStock = {this.filterStock}
+                filteredList = {this.state.filteredSymbols}
+            />
+        }
 
         return (
             <div className={classes.wrapper}>
-                <div className={classes.search}><SearchBar /></div>
+                <div className={classes.search}>{searchBar}</div>
                 <div className={classes.port}>
                     <Portfolio
                         portfolio={this.state.portfolio}

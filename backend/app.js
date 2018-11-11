@@ -103,5 +103,28 @@ app.get("/api/getStockLogo/:id", (req, res, next) => {
         });
 });
 
+app.get("/api/getStockFromDate/:symbol/:date", (req, res, next) => {
+    const symbol = req.params.symbol;
+    const date = req.params.date;
+    iextrading.getStockDataFromExternalAPI(symbol, date)
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED TO GET STOCKS");
+        });
+});
+
+// SHOULD BE DELETED EVENTUALLY
+app.get("/api/getChart/:symbol", (req, res, next) => {
+    const symbol = req.params.symbol;
+    iextrading.getStockChart(symbol)
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED BADLY");
+        });
+});
 
 module.exports = app;
