@@ -108,37 +108,48 @@ class Session extends Component {
 
     componentWillMount(){
         this.getPortfolioGraph();
-      } 
+    } 
 
-    getPortfolioGraph(){
-        let graphColor = 'rgb(109, 160, 9)';
-        if (this.state.gain_loss < 0)
-            graphColor = '#ff3333'
-            
-        this.setState({
-            portfolioGraph:{
-                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June'],
+    makeGraph = (graphColor, graphData, graphLabels, graphLabel) => {    
+        let graph = {
+                labels: graphLabels,
                 datasets:[
                 {
-                    label:'Gains/Losses',
-                    data:[
-                    60,
-                    85,
-                    45,
-                    21,
-                    5,
-                    -50
-                    ],
+                    label:graphLabel,
+                    data: graphData,
                     backgroundColor: graphColor,
                     borderColor: 'rgb(0, 0, 0)',
-                    borderWidth: 1,
+                    borderWidth: 2,
                     lineTension: 0,
-                    pointRadius: 2,
-                    fill: 'start',
+                    pointHitRadius: 12,
+                    pointHoverRadius: 5,
+                    pointRadius: 1,
+                    fill: 'start'
                 }
                 ]
             }
-        });
+        return graph;
+    }
+
+    getPortfolioGraph(){
+        // set the graphs variables and call makeGraph
+        let graphColor = 'rgb(109, 160, 9)';
+        if (this.state.gain_loss < 0)
+            graphColor = '#ff3333'
+        
+        let graphData = [
+            60,
+            85,
+            45,
+            21,
+            5,
+            -50
+        ]; 
+        let graphLabel  = 'Gains/Losses';
+        let graphLabels =  ['January', 'Febuary', 'March', 'April', 'May', 'June'];
+        let graph = this.makeGraph(graphColor, graphData, graphLabels, graphLabel);
+        this.setState({ portfolioGraph: graph});
+       
     }
 
     getStockGraph = async (symbol) => {
@@ -151,7 +162,7 @@ class Session extends Component {
             let dates = [];
             let stockData = [];
             console.log('HERe', stockHistory[0].label)
-            // Set the past 5 years of data but stop at the session date
+            // Set the past month of data but stop before the session date
             for(let i = 0; i < stockHistory.length; ++i)
             {
                 let date = new Date(stockHistory[i].date)
@@ -164,28 +175,16 @@ class Session extends Component {
                     break;
             }
 
-            // set the graphs color
+            // set the graphs variables and call make graph
             let graphColor = 'rgb(109, 160, 9)';
             if ( this.state.viewport_stock.gain_or_loss < 0 )
                 graphColor = '#ff3333'
 
-            this.setState({
-                stockGraph:{    
-                    labels: dates,
-                    datasets:[
-                    {
-                        label: '1 Year',
-                        data: stockData,
-                        backgroundColor: graphColor,
-                        borderColor: 'rgb(0, 0, 0)',
-                        borderWidth: 1,
-                        lineTension: 0,
-                        pointRadius: 2,
-                        fill: 'start',
-                    }
-                    ],
-                }
-            });
+            let graphData = stockData; 
+            let graphLabel  = '1 Year';
+            let graphLabels =  dates;
+            let graph = this.makeGraph(graphColor, graphData, graphLabels, graphLabel);
+            this.setState({ stockGraph: graph});
         });
     }
 
@@ -199,7 +198,8 @@ class Session extends Component {
         };
         this.setState({ viewport_stock: obj });
         this.setState({ graph_data: "Portfolio" });
-
+        this.getPortfolioGraph();
+        
         console.log("The sybmol is: " + this.state.viewport_stock.symbol);
     };
 
@@ -323,8 +323,8 @@ class Session extends Component {
                         marketPrice={this.state.viewport_stock.marketPrice}
                         gain_or_loss={this.state.viewport_stock.gain_or_loss}
                         graph_data={this.state.graph_data}
-                        stockGraph={this.state.stockGraph}
                         portfolioGraph={this.state.portfolioGraph}
+                        stockGraph={this.state.stockGraph}
                         display_porfolio={() => this.displayPortfolio()}
                         logo={this.state.logo}
                     />
