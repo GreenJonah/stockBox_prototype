@@ -49,8 +49,8 @@ class Session extends Component {
         percent: -5,
         gain_loss: -50,
         logo: "NA",
-        sessionDate: 1411192800000,
-        startDate: 1411192800000,
+        sessionDate: 1546239600000,
+        startDate: 1510876800000,
         interval: "hour",
         stockGraph:{},
         portfolioGraph:{},
@@ -161,7 +161,6 @@ class Session extends Component {
             let stockHistory = response;
             let dates = [];
             let stockData = [];
-            console.log('HERe', stockHistory[0].label)
             // Set the past month of data but stop before the session date
             for(let i = 0; i < stockHistory.length; ++i)
             {
@@ -174,7 +173,7 @@ class Session extends Component {
                 else   
                     break;
             }
-
+            console.log("Dates: ", dates);
             // set the graphs variables and call make graph
             let graphColor = 'rgb(109, 160, 9)';
             if ( this.state.viewport_stock.gain_or_loss < 0 )
@@ -264,7 +263,7 @@ class Session extends Component {
                 filteredSymbols: filteredArray,
                 inputValue: term
             });
-        } else if (this.state.filteredSymbols.length > 0) {
+        } else {
             this.setState({
                 filteredSymbols: [],
                 inputValue: ""
