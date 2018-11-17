@@ -10,7 +10,7 @@ const stocks = (props) => (
                 <Stock
                     key={stock.symbol}
                     symbol={stock.symbol}
-                    market_price={stock.latestPrice}
+                    market_price={stock.marketPrice}
                     percentage={stock.changePercent}
                     change={stock.change}
                     display={() => props.stockDisplayed(stock.symbol)}

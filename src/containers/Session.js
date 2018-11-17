@@ -12,33 +12,21 @@ import * as apiServices from '../SharedServices/api-services';
 class Session extends Component {
 
 
-    // CONTAINER
-
-    // SEARCH BAR
-    // type in symbol
-    // Search through list of stock symbols
-    // If exists among list And is part of the owned stocks then show that stock
-    // If exists among list And is not part of owned stocks then make api call, show that stock
-    // If does not exist among list, make api call, show stock else display no stock found
-
-    // Symbols array for searching
-    // market stocks for the ones you looked at on that day, if you go back to them, the api does not have to look them up again
-    //    unless it is on a new day and needs to update the data
-    // Owned stock will be initially right away, and will need to be updated on every new session change, this will have to use the milliseconds date
-    //   if not the same as the 
-
     // OUR OWNED STOCK OBJECTS WILL LOOK LIKE THIS
     // owned_stock: {
     //     symbol: "aapl",
-    //     purchase_date: 129329343243,
-    //     purchase_price: 160,
-    //     purhcase_count: 3,
-    //     purchase: true,
-    //     latest_price: 168,
+    //     purchasePrice: 160,
+    //     purhcaseCount: 3,
     //     gain_or_loss: 8,
+    //     marketPrice, 168
     //     changePercent: 0.01026,
     //     change: 1.71,
     //     logo: "https://storage.googleapis.com/iex/api/logos/AAPL.png"
+    //     historical: [{
+                         // marketPrice: 123,
+                         // date: Apr 17
+    //                  },{},{},
+    //     ]
     // }
 
     state = {
@@ -65,7 +53,8 @@ class Session extends Component {
         startDate: 1411192800000,
         interval: "hour",
         stockGraph:{},
-        portfolioGraph:{}
+        portfolioGraph:{},
+        viewedStocks: null
     };
 
 
@@ -99,15 +88,21 @@ class Session extends Component {
         const owned = [
             ...this.state.owned_stocks
         ];
-        console.log(owned, " length: " + owned.length);
+
+        let found = false;
         for (let i = 0; i < owned.length; i++) {
             if (owned[i].symbol === symbol) {
+                found = true;
                 this.setState({ viewport_stock: owned[i]});
                 this.setState({ graph_data: symbol });
                 this.setState({ logo: owned[i].logo});
                 this.getStockGraph(owned[i].symbol);
-                console.log(owned[i]);
             }
+        }
+
+        if (!found) {
+           apiServices.getStockDataFromDate(null, this.state.sessionDate, symbol);
+           // Now update stocks chart
         }
     };
 
@@ -149,13 +144,13 @@ class Session extends Component {
     getStockGraph = async (symbol) => {
         // https://iextrading.com/developer/docs/#chart
         // Get stocks data for the past 5 years
-        await apiServices.getFiveYearChart(symbol)
+        await apiServices.getChart(symbol)
             .then(response => {
      
             let stockHistory = response;
             let dates = [];
             let stockData = [];
-            console.log('HERe', stockHistory)
+            console.log('HERe', stockHistory[0].label)
             // Set the past 5 years of data but stop at the session date
             for(let i = 0; i < stockHistory.length; ++i)
             {

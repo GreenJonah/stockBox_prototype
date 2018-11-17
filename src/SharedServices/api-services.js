@@ -37,7 +37,7 @@ export const getAllSymbolData = async () => {
 // *************** STOCK API CALLS ******************
 
 // GET STOCK FROM A SINGLE DATE
-export const getStockDataFromDate = async (sessionDateMill, key) => {
+export const getStockDataFromDate = async (owned_stock, dateMill, key) => {
 
     var d = new Date("Fri Nov 9 2018 00:00:00");
 
@@ -64,8 +64,29 @@ export const getStockDataFromDate = async (sessionDateMill, key) => {
 
     await http.get("api/getStockFromDate/" + url)
         .then(response => {
-            console.log("Response data: ", response);
-            formattedData = response;
+            if (owned_stock == null) {
+                formattedData = {
+                    change: 0,
+                    changePercent: 0,
+                    gain_or_loss: 0,
+                    historical: [],
+                    logo: null,
+                    marketPrice: response.marketClose,
+                    purchaseCount: 0,
+                    purchasePrice: 0,
+                    symbol: key
+                };
+            } else {
+                // create new historical spot
+                // update values
+                const his = {
+                    marketPrice: owned_stock.marketPrice,
+                    date: 'Nov 17'
+                }
+                owned_stock.historical.push(his);
+                owned_stock.marketPrice
+            }
+            console.log("Formatted data: ", formattedData);
         })
         .catch(error => {
            
@@ -80,7 +101,7 @@ export const getStockLogo = async (key) => {
 }
 
 // THIS WILL BE DELETED SINCE WE ARE NO LONGER USING 5Y CHARTS, BUT JUST SO IT WON'T ERROR OUT WHEN CALLED IT GOES HERE
-export const getFiveYearChart = async (key) => {
+export const getChart = async (key) => {
     return await http.get("api/getChart/" + key);
 }
 

@@ -18,6 +18,8 @@ const getAllStockDataFromFirebase = async () => {
     return market;
 }
 
+ //   Start of session -  previous current session date  -  current session date
+
 // GET SYMBOL DATA FROM DATABASE
 const getAllSymbolDataFromDatabase = async () => {
     

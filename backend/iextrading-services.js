@@ -42,7 +42,7 @@ const getStockChart = async (symbol) => {
     
     let data = null;
 
-    await iextradingURL.get("/stock/" + symbol + "/chart/5y")
+    await iextradingURL.get("/stock/" + symbol + "/chart/1y")
         .then(response => {
             data = response.data
         })
