@@ -36,60 +36,82 @@ export const getAllSymbolData = async () => {
 
 // *************** STOCK API CALLS ******************
 
-// GET STOCK FROM A SINGLE DATE
-export const getStockDataFromDate = async (owned_stock, dateMill, key) => {
-
-    var d = new Date("Fri Nov 9 2018 00:00:00");
-
-    console.log("Timestamp: ", d);
-
-    var year = d.getFullYear();
-    var month = d.getMonth() + 1;
-    var day = d.getDate();
-
-    if (month < 10) {
-        month = "0" + month;
-    }
-
-    if (day < 10) {
-        day = "0" + day;
-    }
-
-    let fullDate = year + "" + month + "" + day;
-    let url = key + "/" + fullDate;
-
-    console.log("year: " + year + " month: " + month + " day: " + day + " final: " + url);
+// GET STOCK CHART DATA
+export const getChart = async (owned_stock, startDate, sessionDate, key) => {
 
     let formattedData = {};
+    let logo = null;
 
-    await http.get("api/getStockFromDate/" + url)
+    if (owned_stock == null) {
+        logo = await getStockLogo(key);
+    }
+
+    console.log("logo: ", logo);
+
+    await http.get("api/getChart/" + key)
         .then(response => {
-            if (owned_stock == null) {
+
+            let stock = null;
+            const stockHistory = response;
+            let dates = [];
+            let stockData = [];
+
+            // Set the past month of data but stop before the session date
+            for(let i = 0; i < stockHistory.length; i++)
+            {
+                let date = new Date(stockHistory[i].date);
+                let millTime = date.getTime();
+                if (millTime >= startDate && millTime <= sessionDate)
+                {
+                    dates.push(stockHistory[i].label);
+                    stockData.push(stockHistory[i].close);
+                }
+                else if (millTime > sessionDate)   
+                {
+                    stock = stockHistory[i - 1];
+                    console.log("FIRED!!!!!!!!!!!!!!!!!!!!!! " + dates[stockData.length - 1]);
+                    break;
+                }
+            }
+
+            console.log("Stock, ", stock);
+
+            // Brand new stock
+            if (owned_stock == null) 
+            {
                 formattedData = {
-                    change: 0,
-                    changePercent: 0,
+                    change: stock.change,
+                    changePercent: stock.changePercent,
                     gain_or_loss: 0,
-                    historical: [],
-                    logo: null,
-                    marketPrice: response.marketClose,
+                    historical: {
+                        dates: dates,
+                        stockData: stockData
+                    },
+                    logo: logo,
+                    marketPrice: stock.close,
                     purchaseCount: 0,
                     purchasePrice: 0,
                     symbol: key
                 };
-            } else {
-                // create new historical spot
-                // update values
-                const his = {
-                    marketPrice: owned_stock.marketPrice,
-                    date: 'Nov 17'
-                }
-                owned_stock.historical.push(his);
-                owned_stock.marketPrice
             }
+            //  Existing Stock
+            else 
+            {
+                let gain_or_loss = stock.close - owned_stock.purchasePrice;
+                owned_stock.gain_or_loss = gain_or_loss;
+                owned_stock.marketClose = stock.close;
+                owned_stock.historical = {
+                    dates: dates,
+                    stockData: stockData
+                }
+                owned_stock.changePercent = stock.changePercent;
+                owned_stock.change = stock.change;
+            }
+            
             console.log("Formatted data: ", formattedData);
         })
         .catch(error => {
-           
+           console.log("Failed to get chart");
         });
 
     return formattedData;
@@ -99,12 +121,3 @@ export const getStockDataFromDate = async (owned_stock, dateMill, key) => {
 export const getStockLogo = async (key) => {
     return await http.get("api/getStockLogo/" + key);
 }
-
-// THIS WILL BE DELETED SINCE WE ARE NO LONGER USING 5Y CHARTS, BUT JUST SO IT WON'T ERROR OUT WHEN CALLED IT GOES HERE
-export const getChart = async (key) => {
-    return await http.get("api/getChart/" + key);
-}
-
-// STOCK API CALLS
-// Get a stock when clicked on the search bar, using the stock date and timestamp: GET ONE
-// GET a stock by date AND timestamp of the session, getting the market close price  // When session is changed, update all owned stocks

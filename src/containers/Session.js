@@ -22,10 +22,9 @@ class Session extends Component {
     //     changePercent: 0.01026,
     //     change: 1.71,
     //     logo: "https://storage.googleapis.com/iex/api/logos/AAPL.png"
-    //     historical: [{
-                         // marketPrice: 123,
-                         // date: Apr 17
-    //                  },{},{},
+    //     historical: [
+    //          dates: [],
+    //          stockData: []                   
     //     ]
     // }
 
@@ -49,16 +48,17 @@ class Session extends Component {
         percent: -5,
         gain_loss: -50,
         logo: "NA",
-        sessionDate: 1546239600000,
-        startDate: 1510876800000,
+        sessionDate: 1536904800000, // Sep 14, 2018
+        startDate: 1529042400000,   // June 15, 2018
         interval: "hour",
-        stockGraph:{},
-        portfolioGraph:{},
-        viewedStocks: null
+        stockGraph:null,
+        portfolioGraph:null
     };
 
-
     componentDidMount() {
+
+        // INITIALY CHECK IF THE SESSION HAS EXPIRED USING THE SESSION START DATE,
+        // IF IT IS BEFORE THE DATE OF A YEAR AGO TODAY, THEN THE SESSION HAS EXPIRED
 
         apiServices.getAllStockData()
             .then(response => {
@@ -69,7 +69,7 @@ class Session extends Component {
             })
             .catch(error => {
                 this.setState({ error: true })
-            });;
+            });
 
         apiServices.getAllSymbolData()
             .then(response => {
@@ -80,30 +80,39 @@ class Session extends Component {
             })
             .catch(error => {
                 this.setState({ error: true })
-            });;
+            });
     }
 
-    displayStock = (symbol) => {
+    displayStock = async (symbol) => {
 
         const owned = [
             ...this.state.owned_stocks
         ];
-
+        
+        let stock = null;
         let found = false;
         for (let i = 0; i < owned.length; i++) {
             if (owned[i].symbol === symbol) {
                 found = true;
-                this.setState({ viewport_stock: owned[i]});
-                this.setState({ graph_data: symbol });
-                this.setState({ logo: owned[i].logo});
-                this.getStockGraph(owned[i].symbol);
+                stock = owned[i];
             }
         }
 
+        // IF STOCK WAS NOT FOUND FROM STATE, THEN PULL FROM API
         if (!found) {
-           apiServices.getStockDataFromDate(null, this.state.sessionDate, symbol);
-           // Now update stocks chart
+            await apiServices.getChart(null, this.state.startDate, this.state.sessionDate, symbol)
+            .then(res => {
+                console.log("New Stock: ", res);
+                stock = res;
+            })
         }
+
+        console.log("Display Stock: ", stock);
+
+        this.setState({ viewport_stock: stock});
+        this.setState({ graph_data: stock.symbol });
+        this.setState({ logo: stock.logo});
+        this.getStockGraph(stock);
     };
 
     componentWillMount(){
@@ -138,7 +147,7 @@ class Session extends Component {
             graphColor = '#ff3333'
         
         let graphData = [
-            60,
+            60, 
             85,
             45,
             21,
@@ -152,39 +161,25 @@ class Session extends Component {
        
     }
 
-    getStockGraph = async (symbol) => {
-        // https://iextrading.com/developer/docs/#chart
-        // Get stocks data for the past 5 years
-        await apiServices.getChart(symbol)
-            .then(response => {
-     
-            let stockHistory = response;
-            let dates = [];
-            let stockData = [];
-            // Set the past month of data but stop before the session date
-            for(let i = 0; i < stockHistory.length; ++i)
-            {
-                let date = new Date(stockHistory[i].date)
-                if (date.getTime() <= this.state.sessionDate)
-                {
-                    dates[i]     = stockHistory[i].label;
-                    stockData[i] = stockHistory[i].high;
-                }
-                else   
-                    break;
-            }
-            console.log("Dates: ", dates);
-            // set the graphs variables and call make graph
-            let graphColor = 'rgb(109, 160, 9)';
-            if ( this.state.viewport_stock.gain_or_loss < 0 )
-                graphColor = '#ff3333'
+    getStockGraph = (stock) => {
 
-            let graphData = stockData; 
-            let graphLabel  = '1 Year';
-            let graphLabels =  dates;
-            let graph = this.makeGraph(graphColor, graphData, graphLabels, graphLabel);
-            this.setState({ stockGraph: graph});
-        });
+        let dates = [
+            ...stock.historical.dates
+        ]
+        let stockData = [
+            ...stock.historical.stockData
+        ]
+       
+        // set the graphs variables and call make graph
+        let graphColor = 'rgb(109, 160, 9)';
+        if ( this.state.viewport_stock.gain_or_loss < 0 )
+            graphColor = '#ff3333'
+
+        let graphData = stockData; 
+        let graphLabel  = '3 months';
+        let graphLabels =  dates;
+        let graph = this.makeGraph(graphColor, graphData, graphLabels, graphLabel);
+        this.setState({ stockGraph: graph});
     }
 
     displayPortfolio = () => {
@@ -238,7 +233,7 @@ class Session extends Component {
         });
         // reset the graphs
         this.getPortfolioGraph();
-        this.getStockGraph(this.state.viewport_stock.symbol);
+        this.getStockGraph(this.state.viewport_stock);
     }
 
     intervalChangeHandler = (event) => {
@@ -271,7 +266,7 @@ class Session extends Component {
         }
     }
 
-    stockChosen = (symbol) => {
+    stockChosen = async (symbol) => {
 
         this.setState({
             filteredSymbols: [],

@@ -11,7 +11,6 @@ const viewport = (props) => {
                     </div>
                 </div>;
     let symbol_upper = props.symbol.toUpperCase();
-
     if (props.symbol !== "") {
         let box_color = classes.Green;
         if (props.gain_or_loss < 0) 

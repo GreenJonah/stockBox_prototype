@@ -47,7 +47,7 @@ const getStockChart = async (symbol) => {
             data = response.data
         })
         .catch(error => {
-            console.log("FAILED TO GET STOCK FROM EXTERNAL API SOURCE")
+            console.log("FAILED TO GET THE STOCK FROM EXTERNAL API SOURCE")
         });
 
     return data;

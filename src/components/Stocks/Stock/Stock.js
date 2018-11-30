@@ -3,7 +3,9 @@ import classes from './Stock.css';
 
 const stock = (props) => {
 
-    let percentage = (100 * props.percentage).toFixed(2);
+    let percentage = (props.percentage).toFixed(2);
+    let market_price = (props.market_price).toFixed(2);
+    let change = (props.change).toFixed(2);
     let percentage_style = classes.PercentagePos;
     if (percentage < 0){
         percentage_style = classes.PercentageNeg;
@@ -14,8 +16,8 @@ const stock = (props) => {
             <button onClick={props.display}>
                 <p className={classes.Symbol}>{symbol_upper}</p>
                 <p className={percentage_style}>{percentage}%</p>
-                <p className={classes.MarketPrice}>{props.market_price}</p>
-                <p className={classes.Change}>{props.change}</p>
+                <p className={classes.MarketPrice}>{market_price}</p>
+                <p className={classes.Change}>{change}</p>
             </button>
         </div>
     );
