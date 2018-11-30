@@ -48,8 +48,8 @@ const viewport = (props) => {
                 </div>
             </div>
             <div className={classes.Trading}>
-                <button >Sell</button>
-                <button >Buy</button>
+                <button onClick={props.openBuyModal} value='buy'>Buy</button>
+                <button onClick={props.openSellModal} value='sell'>Sell</button>
             </div>
         </div>
     }

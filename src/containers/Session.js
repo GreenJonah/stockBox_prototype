@@ -6,6 +6,8 @@ import Stocks from '../components/Stocks/Stocks';
 import axios from 'axios';
 import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
+import BuyModal from '../components/Trading/Buy';
+import SellModal from '../components/Trading/Sell';
 import classes from './Session.css';
 import * as apiServices from '../SharedServices/api-services';
 
@@ -52,7 +54,10 @@ class Session extends Component {
         startDate: 1529042400000,   // June 15, 2018
         interval: "hour",
         stockGraph:null,
-        portfolioGraph:null
+        portfolioGraph:null,
+        buyModal: false,
+        sellModal: false,
+        buySellQuantity: 0
     };
 
     componentDidMount() {
@@ -115,7 +120,7 @@ class Session extends Component {
         this.getStockGraph(stock);
     };
 
-    componentWillMount(){
+    componentWillMount = () => {
         this.getPortfolioGraph();
     } 
 
@@ -140,7 +145,7 @@ class Session extends Component {
         return graph;
     }
 
-    getPortfolioGraph(){
+    getPortfolioGraph = () => {
         // set the graphs variables and call makeGraph
         let graphColor = 'rgb(109, 160, 9)';
         if (this.state.gain_loss < 0)
@@ -276,6 +281,38 @@ class Session extends Component {
         this.displayStock(symbol);
     }
 
+    handleOpenModal = (event) => {
+        let action = event.target.value;
+        if (action === 'buy')
+            this.setState({ buyModal: true });
+        if (action === 'sell')
+            this.setState({sellModal: true});
+    }
+    
+    handleCloseModal = (event) => {
+        let action = event.target.value;
+        if (action === 'buy')
+            this.setState({ buyModal: false });
+        if (action === 'sell')
+            this.setState({sellModal: false });
+       
+        this.setState({ 
+            buySellQuantity: 0 });
+    }
+
+    quantityChangeHandler = (event) => {
+        let tempQuantity = this.state.buySellQuantity;
+        if (event.target.value === '+')
+            tempQuantity++;
+        else if (event.target.value === '-' && tempQuantity !== 0)
+            tempQuantity--;
+        else if (!isNaN(event.target.value))
+            tempQuantity = event.target.value;
+        this.setState({
+            buySellQuantity: tempQuantity
+        });
+    }
+
     render() {
         let stocks = <p>Data Cannot be loaded</p>;
         if (this.state.owned_stocks) {
@@ -321,7 +358,27 @@ class Session extends Component {
                         stockGraph={this.state.stockGraph}
                         display_porfolio={() => this.displayPortfolio()}
                         logo={this.state.logo}
+                        openBuyModal={this.handleOpenModal}
+                        openSellModal={this.handleOpenModal}
                     />
+                    <BuyModal
+                        showModal={this.state.buyModal}
+                        handleCloseModal={this.handleCloseModal}
+                        stock={this.state.viewport_stock.symbol}
+                        buyQuantity={this.state.buySellQuantity}
+                        changeQuantity={this.quantityChangeHandler}
+                        marketPrice={this.state.viewport_stock.marketPrice}
+                    />
+                    <SellModal
+                        showModal={this.state.sellModal}
+                        handleCloseModal={this.handleCloseModal}
+                        stock={this.state.viewport_stock.symbol}
+                        buyQuantity={this.state.buySellQuantity}
+                        changeQuantity={this.quantityChangeHandler}
+                        marketPrice={this.state.viewport_stock.marketPrice}
+                    />
+                    
+                    
                 </div>
                 <div className={classes.stock}>{stocks}</div>
                 <div className={classes.session}>
