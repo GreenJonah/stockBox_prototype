@@ -5,34 +5,32 @@ const getAllStockDataFromFirebase = async () => {
     
     let market = [];
 
-    await firebaseURL.get("/stocks/owned_stocks.json")
+    await firebaseURL.get("/owned_stocks.json")
         .then(response => {
             Object.keys(response.data).forEach(function (key) {
                 market.push({ ...response.data[key], key })
             });
         })
         .catch(error => {
-            market = null
+            console.log("Failed to retrieve stocks")
         });
 
     return market;
 }
-
- //   Start of session -  previous current session date  -  current session date
 
 // GET SYMBOL DATA FROM DATABASE
 const getAllSymbolDataFromDatabase = async () => {
     
     let symbols = [];
 
-    await firebaseURL.get("/stocks/symbols.json")
+    await firebaseURL.get("https://stock-box-prototype.firebaseio.com/symbols.json")
         .then(response => {
             Object.keys(response.data).forEach(function (key) {
                 symbols.push({ ...response.data[key], key })
             });
         })
         .catch(error => {
-            console.log("Failed");
+            console.log("Failed to retrieve symbols");
         });
 
     return symbols;
@@ -43,7 +41,7 @@ const postStockDataToFirebase = async (data) => {
 
     let newData = null;
 
-    await firebaseURL.post("/stocks/owned_stocks.json", data)
+    await firebaseURL.post("/owned_stocks.json", data)
         .then(response => {
             let key = response.data.name;
             console.log("Key value: ", key);
@@ -61,7 +59,7 @@ const postSymbolDataToFirebase = async (data) => {
 
     let newData = null;
 
-    await firebaseURL.post("/stocks/symbols.json", data)
+    await firebaseURL.post("https://stock-box-prototype.firebaseio.com/symbols.json", data)
         .then(response => {
             console.log("POST: Response from the database: ", response);
             let key = response.data.name;
@@ -80,12 +78,18 @@ const putStockDataToFirebase = async (data) => {
     let key = data.key;
     delete data.key;
 
-    await firebaseURL.put("/stocks/owned_stocks/" + key + ".json", data);
+    await firebaseURL.put("/owned_stocks/" + key + ".json", data);
+}
+
+// // PUT PORTFOLIO DATA TO FIREBASE
+const putPortfolioDataToFirebase = async (data) => {
+
+    await firebaseURL.put("/portfolio.json", data);
 }
 
 // DELETE STOCK DATA FROM DATABASE
 const deleteStockDataFromFirebase = async (key) => {
-    await firebaseURL.delete("/stocks/owned_stocks/" + key + ".json");
+    await firebaseURL.delete("/owned_stocks/" + key + ".json");
 }
 
 module.exports = {
@@ -94,5 +98,6 @@ module.exports = {
     postStockDataToFirebase,
     deleteStockDataFromFirebase,
     putStockDataToFirebase,
-    postSymbolDataToFirebase
+    postSymbolDataToFirebase,
+    putPortfolioDataToFirebase
 };

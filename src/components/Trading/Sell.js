@@ -22,12 +22,12 @@ const modal = (props) => {
             </button>
             <input 
               className={classes.quantity} 
-              value={props.buyQuantity}
+              value={props.sellQuantity}
               onChange={props.changeQuantity}
             >
             </input>
             <p className={classes.costLabel}>Profit:</p>
-            <p className={classes.cost}>{(props.buyQuantity * props.marketPrice).toLocaleString('en')}</p>
+            <p className={classes.cost}>{(props.sellQuantity * props.marketPrice).toLocaleString('en')}</p>
             <button 
               onClick={props.changeQuantity} 
               className={classes.minus} 
@@ -36,7 +36,7 @@ const modal = (props) => {
               -
             </button>
             <button 
-              onClick={props.handleCloseModal} 
+              onClick={(event) => props.sold(props.stock, event)}
               className={classes.purchase}
               value='sell'
             >

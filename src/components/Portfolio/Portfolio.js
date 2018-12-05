@@ -3,6 +3,11 @@ import classes from './Portfolio.css';
 
 const portfolio = (props) => {
 
+    let percent = (parseFloat(props.percent) * 100).toFixed(2);
+    let total = (props.portfolio).toFixed(2);
+    let buy_power = (props.buyPower).toFixed(2);
+    let stock_net = (props.stockNet).toFixed(2);
+    let gain_loss = (props.gain_loss).toFixed(2);
     let color = classes.green;
     if (props.percent < 0) {
         color = classes.red;
@@ -14,31 +19,31 @@ const portfolio = (props) => {
                 <div className={classes.label}>
                     Portfolio
                     <div className={[classes.values, classes.green].join(' ')}>
-                        {props.portfolio}
+                        {total}
                     </div>
                 </div>
                 <div className={classes.label}>
                     Buy Power
                     <div className={[classes.values, classes.green].join(' ')}>
-                        {props.buyPower}
+                        {buy_power}
                     </div>
                 </div>
                 <div className={classes.label}>
                     Stock Net
                     <div className={[classes.values, classes.green].join(' ')}>
-                        {props.stockNet}
+                        {stock_net}
                     </div>
                 </div>
                 <div className={classes.label}>
                     Returns
                     <div className={[classes.values, color].join(' ')}>
-                        {props.percent}%
+                        {percent}%
                     </div>
                 </div>
                 <div className={classes.label}>
                     Gains/Loss
                     <div className={[classes.values, color].join(' ')}>
-                        {props.gain_loss}
+                        {gain_loss}
                     </div>
                 </div>
             </div>

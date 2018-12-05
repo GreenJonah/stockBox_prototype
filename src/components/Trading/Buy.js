@@ -36,7 +36,7 @@ const modal = (props) => {
               -
             </button>
             <button 
-              onClick={props.handleCloseModal} 
+              onClick={(event) => props.purchased(props.stock, event)}
               className={classes.purchase}
               value='buy'
             >

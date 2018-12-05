@@ -6,7 +6,6 @@ const intervalControl = (props) => {
         <div className={classes.wrapper}>
         <div className={classes.intervalTitle}>Interval</div> 
             <select value={props.interval} onChange={props.intervalChange} className={classes.intervalSelect} name="Interval">
-                <option value="hour">Hour</option>
                 <option value="day">Day</option>
                 <option value="week">Week</option>
                 <option value="month">Month</option>
