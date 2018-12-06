@@ -10,8 +10,8 @@ const viewport = (props) => {
                         <Graph graphData={props.portfolioGraph}/>
                     </div>
                 </div>;
-    let symbol_upper = props.symbol.toUpperCase();
     if (props.symbol !== "") {
+        let symbol_upper = props.symbol.toUpperCase();
         let box_color = classes.Green;
         if (props.gain_or_loss < 0) 
             box_color = classes.Red;
@@ -34,17 +34,13 @@ const viewport = (props) => {
             />
             </div>
             <div className={classes.StockInfo}>
-                <div className={classes.PurchasePrice}>
-                    Purchase Price
-                    <div className={classes.Prices}>{props.purchasePrice}</div>
-                </div>
                 <div className={classes.MarketPrice}>
                     Market Price
                     <div className={classes.Prices}>{props.marketPrice}</div>
                 </div>
                 <div className={classes.GainLoss}>
                     Gain/Loss
-                    <div className={box_color}>{props.gain_or_loss}</div>
+                    <div className={box_color}>{props.gain_or_loss.toFixed(2)}</div>
                 </div>
             </div>
             <div className={classes.Trading}>

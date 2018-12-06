@@ -3,7 +3,6 @@ import Portfolio from '../components/Portfolio/Portfolio';
 import SearchBar from '../components/SearchBar/SearchBar';
 import SessionSettings from '../components/SessionControls/SessionControls';
 import Stocks from '../components/Stocks/Stocks';
-import axios from 'axios';
 import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
 import BuyModal from '../components/Trading/Buy';
@@ -16,52 +15,39 @@ import * as apiServices from '../SharedServices/api-services';
 class Session extends Component {
 
 
-    // OUR OWNED STOCK OBJECTS WILL LOOK LIKE THIS
-    // owned_stock: {
-    //     symbol: "aapl",
-    //     purchasePrice: 160,
-    //     purhcaseCount: 3,
-    //     gain_or_loss: 8,
-    //     marketPrice, 168
-    //     changePercent: 0.01026,
-    //     change: 1.71,
-    //     logo: "https://storage.googleapis.com/iex/api/logos/AAPL.png"
-    //     historical: [
-    //          dates: [],
-    //          stockData: []                   
-    //     ]
-    // }
-
     state = {
         error: false,
-        owned_stocks: null,
-        symbols: null,
+        owned_stocks: [],
+        sessionKey: 0,
+        symbols: [],
+        portfolio: {
+            portfolio_total: 1000,
+            buy_power: 1000,
+            stock_net: 0,
+            returns: 0,
+            gain_loss: 0
+        },
+        endDate: 1536904800000, // Sep 14th, 2018
+        sessionDate: 1528956000000, 
+        startDate: 1528956000000,   // June 15, 2018
         filteredSymbols: [],
         inputValue: "",
-        owned_stock_count: 0,
         viewport_stock: {
             symbol: "",
-            purchasePrice: 0,
             gain_or_loss: 0,
             marketPrice: 0
         },
         graph_data: "Portfolio",
-        portfolio: 950,
-        buyPower: 600,
-        stockNet: 350,
-        percent: -5,
-        gain_loss: -50,
         logo: "NA",
-        sessionDate: 1536904800000, // Sep 14, 2018
-        startDate: 1529042400000,   // June 15, 2018
-        interval: "hour",
-        stockGraph:null,
-        portfolioGraph:null,
+        interval: "day",
+        stockGraph:{},
+        portfolioGraph:{},
         buyModal: false,
         sellModal: false,
         saveModal: false,
         loadModal: false,
-        buySellQuantity: 0
+        buySellQuantity: 0,
+        not_owned_stock: false
     };
 
     componentDidMount() {
@@ -69,6 +55,23 @@ class Session extends Component {
         // INITIALY CHECK IF THE SESSION HAS EXPIRED USING THE SESSION START DATE,
         // IF IT IS BEFORE THE DATE OF A YEAR AGO TODAY, THEN THE SESSION HAS EXPIRED
 
+        console.log("Session Key: ", localStorage.getItem("sessionKey"));
+
+        if (localStorage.getItem("sessionKey")) {
+            console.log("Yes");
+            this.setState({sessionKey: localStorage.getItem("sessionKey")});
+            apiServices.setNodeSessionKey(localStorage.getItem("sessionKey"));
+            this.getInitialStockData();
+            
+        } else {
+            console.log("No")
+            // Open up the create/load dialog, this would happen in the render function
+            // we will probably need to create a jsx tag for both the two different pages, 
+            // create/load dialog and the stock application itself
+        }
+    }
+
+    getInitialStockData = () => {
         apiServices.getAllStockData()
             .then(response => {
                 console.log("MARKET data: ", response);
@@ -104,6 +107,7 @@ class Session extends Component {
             if (owned[i].symbol === symbol) {
                 found = true;
                 stock = owned[i];
+                this.setState({not_owned_stock: false});
             }
         }
 
@@ -113,6 +117,7 @@ class Session extends Component {
             .then(res => {
                 console.log("New Stock: ", res);
                 stock = res;
+                this.setState({not_owned_stock: true});
             })
         }
 
@@ -181,7 +186,7 @@ class Session extends Component {
        
         // set the graphs variables and call make graph
         let graphColor = 'rgb(109, 160, 9)';
-        if ( this.state.viewport_stock.gain_or_loss < 0 )
+        if (stock.change < 0)
             graphColor = '#ff3333'
 
         let graphData = stockData; 
@@ -195,11 +200,11 @@ class Session extends Component {
 
         let obj = {
             symbol: "",
-            purchasePrice: 0,
             gain_or_loss: 0,
             marketPrice: 0
         };
         this.setState({ viewport_stock: obj });
+        this.setState({not_owned_stock: false});
         this.setState({ graph_data: "Portfolio" });
         this.getPortfolioGraph();
         
@@ -211,9 +216,6 @@ class Session extends Component {
         let currentDate = new Date().getTime();
 
         switch (this.state.interval) {
-            case "hour":
-                newSessionDate += 3600000;
-                break;
             case "day":
                 newSessionDate += 86400000;
                 break;
@@ -240,9 +242,44 @@ class Session extends Component {
         this.setState({
             sessionDate: newSessionDate
         });
-        // reset the graphs
-        this.getPortfolioGraph();
-        this.getStockGraph(this.state.viewport_stock);
+       
+        // update data
+        this.updateIntervalDataHandler(newSessionDate);
+        console.log("FINISHED UPDATE INTVERAL HANDLER");
+    }
+
+    updateIntervalDataHandler = async (sessionDate) => {
+        const owned = [
+            ...this.state.owned_stocks
+        ];
+
+        if (owned.length > 0) {
+            let portfolio = {
+                ...this.state.portfolio
+            }
+            const startDate = this.state.startDate;
+            const viewportStock = this.state.viewport_stock;
+            
+            for (let i = 0; i < owned.length; i++) {
+
+                let updatedStock = await apiServices.getChart(owned[i], startDate, sessionDate, owned[i].symbol);
+                apiServices.putStockData(updatedStock);
+
+                if (viewportStock.symbol == owned[i].symbol) {
+                    this.setState({viewport_stock: updatedStock});
+                }
+            }
+            this.updatePorfolioData(portfolio, owned);
+            console.log("UPDATE INTVERAL DATA FINISHED");
+            // reset the graphs
+            this.getPortfolioGraph();
+            this.getStockGraph(this.state.viewport_stock);
+        } 
+        
+        if (this.state.not_owned_stock){
+            console.log("Fired");
+            this.displayPortfolio();
+        }
     }
 
     intervalChangeHandler = (event) => {
@@ -325,6 +362,152 @@ class Session extends Component {
             buySellQuantity: 0 });
     }
 
+    purchasedStock = async (symbol, event) => {
+        console.log("Symbol: ", symbol);
+
+        let quantity = this.state.buySellQuantity;
+        this.handleCloseModal(event);
+
+        let portfolio = {
+            ...this.state.portfolio
+        }
+
+        let owned = null;
+
+        // If we don't own the stock currently
+        if (this.state.not_owned_stock) {
+            console.log("Fired");
+            let stock = {
+                ...this.state.viewport_stock
+            }
+
+            stock.purchaseCounts.push(quantity);
+            stock.purchasePrices.push(stock.marketPrice);
+            portfolio.buy_power -= Math.round((parseFloat(quantity) * parseFloat(stock.marketPrice)) * 100) / 100;
+
+            console.log("Add new stock: ", owned);
+            let newStock = await apiServices.postStockData(stock);
+
+            owned = [
+                ...this.state.owned_stocks,
+                newStock
+            ];
+
+            this.setState({not_owned_stock: false});
+            this.setState({owned_stocks: owned});
+        } else {
+            console.log("Purchased same stock");
+            owned = [
+                ...this.state.owned_stocks
+            ];
+            
+            for (let i = 0; i < owned.length; i++) {
+                if (owned[i].symbol === symbol) {
+                    owned[i].purchaseCounts.push(quantity);
+                    owned[i].purchasePrices.push(owned[i].marketPrice);
+                    portfolio.buy_power -=  Math.round((parseFloat(quantity) * parseFloat(owned[i].marketPrice)) * 100) / 100;
+                    apiServices.putStockData(owned[i]);
+                    this.setState({owned_stocks: owned});
+                    break;
+                }
+            }
+        } 
+        console.log("Onwed: ", owned);
+        this.updatePorfolioData(portfolio, owned);
+    }
+
+    soldStock = async (symbol, event) => {
+        console.log("Symbol: ", symbol);
+
+        let quantity = parseFloat(this.state.buySellQuantity);
+        this.handleCloseModal(event);
+
+        let owned = [
+            ...this.state.owned_stocks
+        ];
+        
+        for (let i = 0; i < owned.length; i++) {
+            if (owned[i].symbol === symbol) {
+  
+                let portfolio = {
+                    ...this.state.portfolio
+                }
+
+                let remainingStockQuantity = 0;
+                for (let t = 0; t < owned[i].purchaseCounts.length; t++) {
+
+                    if (quantity > 0) {
+                        
+                        let soldQuantity = 0;
+
+                        // Use Quantity if it is less
+                        if (quantity < parseFloat(owned[i].purchaseCounts[t])) {
+                            soldQuantity = quantity;
+                            owned[i].purchaseCounts[t] -= soldQuantity;
+                        } else {
+                            soldQuantity = parseFloat(owned[i].purchaseCounts[t])
+                            owned[i].purchaseCounts[t] = 0;
+                        }
+                        portfolio.buy_power += Math.round((parseFloat(owned[i].marketPrice) * parseFloat(soldQuantity)) * 100) / 100; 
+                        quantity = quantity - soldQuantity;
+                       
+                    } 
+                    remainingStockQuantity += parseFloat(owned[i].purchaseCounts[t])
+                    console.log("remaining: " + remainingStockQuantity);
+                }
+                
+                if (remainingStockQuantity == 0) {
+                    // delete stock from the database
+                    apiServices.deleteStockData(owned[i]);
+                    owned.splice(i, 1);
+                    this.displayPortfolio();
+                    console.log("Owned stocks, ", owned);
+                } else {
+                    // update stock in database
+                    apiServices.putStockData(owned[i]);
+                    owned[i] = this.updateStockGainOrLoss(owned[i]);
+                    this.displayStock(symbol);
+                }
+                this.setState({owned_stocks: owned});
+                this.updatePorfolioData(portfolio, owned);
+            }
+        }
+    }
+
+    updateStockGainOrLoss = (stock) => {
+        let total_gains_losses = 0;
+        for (let i = 0; i < stock.purchasePrices.length; i++) {
+            total_gains_losses += Math.round(((parseFloat(stock.marketPrice) - parseFloat(stock.purchasePrices[i])) * stock.purchaseCounts[i]) * 100) / 100; 
+        }
+        stock.gain_or_loss = total_gains_losses;
+
+        return stock;
+    }
+
+    updatePorfolioData = (portfolio, owned) => {
+
+        console.log("owned length: " + owned.length);
+        let stock_net = 0;
+        let gain_loss = 0;
+        for (let i = 0; i < owned.length; i++) {
+            for (let t = 0; t < owned[i].purchasePrices.length; t++) {
+                stock_net += Math.round(((parseFloat(owned[i].marketPrice) * parseFloat(owned[i].purchaseCounts[t]))) * 100) / 100; 
+            }
+            gain_loss += parseFloat(owned[i].gain_or_loss);
+        }
+        portfolio.gain_loss = gain_loss;
+        portfolio.stock_net = stock_net;
+        portfolio.portfolio_total = stock_net + portfolio.buy_power;
+        if (gain_loss != 0) {
+            portfolio.returns = gain_loss / stock_net;
+        } else {
+            portfolio.returns = 0;
+        }
+
+        this.setState({portfolio: portfolio});
+        apiServices.putPorfolioData(portfolio);
+    }
+
     quantityChangeHandler = (event) => {
         let tempQuantity = this.state.buySellQuantity;
         if (event.target.value === '+')
@@ -339,13 +522,6 @@ class Session extends Component {
     }
 
     render() {
-        let stocks = <p>Data Cannot be loaded</p>;
-        if (this.state.owned_stocks) {
-            stocks = <Stocks
-                stockDisplayed={this.displayStock}
-                owned_stocks={this.state.owned_stocks}
-            />
-        }
         let searchBar = <p>Loading Search Bar</p>;
 
         if (this.state.symbols) {
@@ -362,11 +538,11 @@ class Session extends Component {
                 <div className={classes.search}>{searchBar}</div>
                 <div className={classes.port}>
                     <Portfolio
-                        portfolio={this.state.portfolio}
-                        buyPower={this.state.buyPower}
-                        stockNet={this.state.stockNet}
-                        percent={this.state.percent}
-                        gain_loss={this.state.gain_loss}
+                        portfolio={this.state.portfolio.portfolio_total}
+                        buyPower={this.state.portfolio.buy_power}
+                        stockNet={this.state.portfolio.stock_net}
+                        percent={this.state.portfolio.returns}
+                        gain_loss={this.state.portfolio.gain_loss}
                     />
                 </div>
                 <div className={classes.tool}>
@@ -375,7 +551,6 @@ class Session extends Component {
                 <div className={classes.view}>
                     <Viewport
                         symbol={this.state.viewport_stock.symbol}
-                        purchasePrice={this.state.viewport_stock.purchasePrice}
                         marketPrice={this.state.viewport_stock.marketPrice}
                         gain_or_loss={this.state.viewport_stock.gain_or_loss}
                         graph_data={this.state.graph_data}
@@ -387,6 +562,7 @@ class Session extends Component {
                     />
                     <BuyModal
                         showModal={this.state.buyModal}
+                        purchased={this.purchasedStock}
                         handleCloseModal={this.handleCloseModal}
                         stock={this.state.viewport_stock.symbol}
                         buyQuantity={this.state.buySellQuantity}
@@ -395,9 +571,10 @@ class Session extends Component {
                     />
                     <SellModal
                         showModal={this.state.sellModal}
+                        sold={this.soldStock}
                         handleCloseModal={this.handleCloseModal}
                         stock={this.state.viewport_stock.symbol}
-                        buyQuantity={this.state.buySellQuantity}
+                        sellQuantity={this.state.buySellQuantity}
                         changeQuantity={this.quantityChangeHandler}
                         marketPrice={this.state.viewport_stock.marketPrice}
                     />
@@ -410,7 +587,12 @@ class Session extends Component {
                         handleCloseModal={this.handleCloseModal}
                     />   
                 </div>
-                <div className={classes.stock}>{stocks}</div>
+                <div className={classes.stock}>{
+                    <Stocks
+                        stockDisplayed={this.displayStock}
+                        owned_stocks={this.state.owned_stocks}
+                    />
+                }</div>
                 <div className={classes.session}>
                     <SessionSettings
                         className={classes.session}

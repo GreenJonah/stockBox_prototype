@@ -2,6 +2,12 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const firebase = require('./firebase-services');
 const iextrading = require('./iextrading-services');
+let localStorage = null;
+if ((typeof localStorage === "undefined" || localStorage === null)) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./local-storage');
+    console.log("INITIALIZED THE LOCALSTORAGE");
+}
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +24,14 @@ app.use((req, res, next) => {
         "GET, POST, DELETE, PUT"
     );
     next();
+});
+
+// ****** SET BACKEND LOCAL STORAGE SESSION KEY ********
+
+app.get("/api/setSessionKey:id", (req, res, next) => {
+    const sessionKey = req.params.id;
+    localStorage.setItem('sessionKey', sessionKey);
+    res.status(200).json({message: "Session key set"});
 });
 
 // *************** DATABASE CALLS ******************
@@ -79,6 +93,17 @@ app.put("/api/putStockData", (req, res, next) => {
         });
 });
 
+app.put("/api/putPortfolioData", (req, res, next) => {
+    const portfolio = req.body;
+    firebase.putPortfolioDataToFirebase(portfolio)
+        .then(response => {
+            res.status(200).json({message: "Portfolio updated"});
+        })
+        .catch(error => {
+            console.log("FAILED TO PUT PORTFOLIO");
+        });
+});
+
 app.delete("/api/deleteStockData/:id", (req, res, next) => {
     const key = req.params.id;
     firebase.deleteStockDataFromFirebase(key)
@@ -92,6 +117,7 @@ app.delete("/api/deleteStockData/:id", (req, res, next) => {
 
 
 // *************** STOCK CALLS ******************
+
 app.get("/api/getStockLogo/:id", (req, res, next) => {
     const key = req.params.id;
     iextrading.getStockLogoURLFromExternalAPI(key)

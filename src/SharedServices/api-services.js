@@ -1,6 +1,10 @@
-import axios from '../axios-service';
 import  * as http from './http-services';
 
+// ****** SET BACKEND LOCAL STORAGE SESSION KEY ********
+
+export const setNodeSessionKey = async (sessionKey) => {
+    return await http.get("api/setSessionKey" + sessionKey);
+}
 
 // *************** DATABASE API CALLS ******************
 
@@ -17,6 +21,11 @@ export const postSymbolData= async (data) => {
 // PUT STOCK DATA 
 export const putStockData = async (data) => {
     await http.put("api/putStockData", data);
+}
+
+// PUT PORFOLIO DATA 
+export const putPorfolioData = async (data) => {
+    await http.put("api/putPortfolioData", data);
 }
 
 // DELETE STOCK DATA
@@ -59,14 +68,16 @@ export const getChart = async (owned_stock, startDate, sessionDate, key) => {
             // Set the past month of data but stop before the session date
             for(let i = 0; i < stockHistory.length; i++)
             {
-                let date = new Date(stockHistory[i].date);
+                let date = new Date(stockHistory[i].label);
                 let millTime = date.getTime();
+                // console.log("Date " + date + " Mill time: ", millTime + "  startDate: " + startDate + " sessionDate: " + sessionDate);
                 if (millTime >= startDate && millTime <= sessionDate)
                 {
                     dates.push(stockHistory[i].label);
                     stockData.push(stockHistory[i].close);
                 }
-                else if (millTime > sessionDate)   
+                
+                if (millTime > sessionDate || (stockHistory.length - 1) == i)   
                 {
                     stock = stockHistory[i - 1];
                     console.log("FIRED!!!!!!!!!!!!!!!!!!!!!! " + dates[stockData.length - 1]);
@@ -89,23 +100,28 @@ export const getChart = async (owned_stock, startDate, sessionDate, key) => {
                     },
                     logo: logo,
                     marketPrice: stock.close,
-                    purchaseCount: 0,
-                    purchasePrice: 0,
+                    purchaseCounts: [],
+                    purchasePrices: [],
                     symbol: key
                 };
             }
             //  Existing Stock
             else 
             {
-                let gain_or_loss = stock.close - owned_stock.purchasePrice;
-                owned_stock.gain_or_loss = gain_or_loss;
-                owned_stock.marketClose = stock.close;
+                let total_gains_losses = 0;
+                for (var i = 0; i < owned_stock.purchasePrices.length; i++) {
+                    total_gains_losses += Math.round(((parseFloat(stock.close) - parseFloat(owned_stock.purchasePrices[i])) * owned_stock.purchaseCounts[i]) * 100) / 100; 
+                }
+                owned_stock.gain_or_loss = total_gains_losses;
+                owned_stock.marketPrice = stock.close;
                 owned_stock.historical = {
                     dates: dates,
                     stockData: stockData
                 }
                 owned_stock.changePercent = stock.changePercent;
                 owned_stock.change = stock.change;
+
+                formattedData = owned_stock;
             }
             
             console.log("Formatted data: ", formattedData);
