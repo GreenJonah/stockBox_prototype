@@ -22,7 +22,11 @@ const sessionSettings = (props) => {
                 intervalChange={props.intervalChange}
             />
         </div>
-        <div className={classes.options}><SessionOptions/></div>
+        <div className={classes.options}>
+            <SessionOptions
+                openModal={props.openModal}
+            />
+        </div>
     </div>
     );
 };

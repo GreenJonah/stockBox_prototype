@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
+.modal {
+    position: absolute;
+    color: white;
+    font-family: 'Oswald';
+    background-color: rgb(71, 71, 71);
+    border: 3px solid black;
+    border-radius: 12px;
+    width: 38%;
+    height: 38%;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+}
