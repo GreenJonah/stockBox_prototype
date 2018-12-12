@@ -13,6 +13,7 @@ const sessionSettings = (props) => {
             <ProgressBar
                 sessionDate={props.sessionDate}
                 startDate={props.startDate}
+                endDate={props.endDate}
             />
         </div>
         <div className={classes.interval}>

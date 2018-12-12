@@ -23,6 +23,11 @@ export const putStockData = async (data) => {
     await http.put("api/putStockData", data);
 }
 
+// PUT STOCK DATA 
+export const putSessionDates = async (data) => {
+    await http.put("api/putSessionDates", data);
+}
+
 // PUT PORFOLIO DATA 
 export const putPorfolioData = async (data) => {
     await http.put("api/putPortfolioData", data);
@@ -37,6 +42,16 @@ export const deleteStockData = async (data) => {
 export const getAllStockData = async () => {    
    return await http.get("api/getAllStockData");
 }
+
+// GET SESSION DATES
+export const getSessionDates = async () => {    
+    return await http.get("api/getSessionDates");
+}
+
+// GET PORTFOLIO DATA
+ export const getPortfolioData = async () => {    
+    return await http.get("api/getPortfolioData");
+ }
 
 // GET SYMBOL DATA FROM DATABASE
 export const getAllSymbolData = async () => {
