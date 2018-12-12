@@ -12,7 +12,7 @@ const iextradingURL = axios.create({
 });
 
 const firebaseURL = axios.create({
-    baseURL: "https://stock-box-prototype.firebaseio.com/" + localStorage.getItem("sessionKey")
+    baseURL: "https://stock-box-prototype.firebaseio.com/sessions/" + localStorage.getItem("sessionKey")
 });
 
 module.exports = {

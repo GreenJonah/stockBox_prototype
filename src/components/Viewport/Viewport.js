@@ -2,16 +2,16 @@ import React from 'react';
 import Graph from './Graph/Graph';
 import Aux from '../../hoc/Auxx';
 import classes from './Viewport.css';
+import home from '../../images/home.svg';
 
 const viewport = (props) => {
+    console.log("PortfolioGraph: ", props.portfolioGraph);
     let view = <div className={classes.box1}>
-                    <div className={classes.title}>PORTFOLIO</div>    
                     <div className={classes.graph}>
                         <Graph graphData={props.portfolioGraph}/>
                     </div>
                 </div>;
     if (props.symbol !== "") {
-        let symbol_upper = props.symbol.toUpperCase();
         let box_color = classes.Green;
         if (props.gain_or_loss < 0) 
             box_color = classes.Red;
@@ -21,11 +21,15 @@ const viewport = (props) => {
             logo_tag = <img src={props.logo} alt="LOGO!!" height="50" width="50"/>
         }
 
+        let sellButton = null;
+        if (!props.not_owned) {
+            sellButton = <button onClick={props.openModal} value='sell'>Sell</button>
+        }
+        console.log("Stock graph: ", props.stockGraph);
         view = <div className={classes.box2}>
-            <div className={classes.title}>{symbol_upper}</div>
             <div className={classes.logo}>{logo_tag}</div>
             <div className={classes.miniWrapper}>
-                <button  onClick={props.display_porfolio} className={classes.MiniGraph}>-</button>
+                <img src={home}  onClick={props.display_porfolio} className={classes.MiniGraph} />
             </div>
             <div className={classes.graph}>
             <Graph
@@ -36,7 +40,7 @@ const viewport = (props) => {
             <div className={classes.StockInfo}>
                 <div className={classes.MarketPrice}>
                     Market Price
-                    <div className={classes.Prices}>{props.marketPrice}</div>
+                    <div className={classes.Prices}>{props.marketPrice.toFixed(2)}</div>
                 </div>
                 <div className={classes.GainLoss}>
                     Gain/Loss
@@ -45,7 +49,7 @@ const viewport = (props) => {
             </div>
             <div className={classes.Trading}>
                 <button onClick={props.openModal} value='buy'>Buy</button>
-                <button onClick={props.openModal} value='sell'>Sell</button>
+                {sellButton}
             </div>
         </div>
     }

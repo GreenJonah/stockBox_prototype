@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald');
 .title {
-    background-color: black;
+    background-color: #0e1111;
     color: #dadada;
     font-family: 'Oswald';
     font-size: 250%;
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
     height: 50px;
     width: 100%;
 }

@@ -38,22 +38,22 @@ const getAllSymbolDataFromDatabase = async () => {
 
 // GET SESSION NAMES FROM FIREBASE
 const getAllSessionNamesFromFirebase = async () => {
-    let sessionNames = [];
+    let sessions = [];
 
     console.log("HERE");
 
     // FIND HOW TO GET THE SESSION NAME IN THE URL
-    await firebaseURL.get("https://stock-box-prototype.firebaseio.com/symbols.json")
+    await firebaseURL.get("https://stock-box-prototype.firebaseio.com/sessions.json")
     .then(response => {
         Object.keys(response.data).forEach(function (key) {
-            sessionNames.push({ ...response.data[key], key })
+            sessions.push({name: response.data[key].sessionName, key: key});
         });
     })
     .catch(error => {
         console.log("Failed to retrieve session names");
     });
     
-    return sessionNames;
+    return sessions;
 }
 
 // POST STOCK DATA TO FIREBASE

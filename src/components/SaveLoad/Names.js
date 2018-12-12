@@ -4,17 +4,20 @@ import classes from './Names.css';
   
     const Names = (props) => {        
         return (
-            <Aux>
-            {props.names.map((name) => (
-                <button 
-                    key={name.toString()} 
-                    value={name}
-                    className={classes.btn}
+            <select 
+                className={classes.select}
+                value={props.session} 
+                onChange={props.sessionSelected}
             >
-                {name}
-            </button>
+            {props.allSessions.map(session => (
+                <option 
+                    key={session.key.toString()} 
+                    value={session.name.toString()}
+            >
+                {session.name}
+            </option>
             ))}
-            </Aux>
+            </select>
         );
   };
  

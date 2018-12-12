@@ -1,4 +1,4 @@
-.btn {
+.select {
     background-color: white;
     color: black;
     border: 3px solid black;
@@ -7,5 +7,5 @@
     border-radius: 8px;
     text-align: center;
     margin: 0 auto;
-    width: 85%;
+    width: 100%;
 }
