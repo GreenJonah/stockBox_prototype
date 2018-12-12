@@ -3,14 +3,22 @@ import classes from './SearchBar.css';
 
 const searchBar = (props) => {
 
+    let cssClasses = "";
+
+    if (props.searchStyle == "Search") {
+        cssClasses = classes.Search;
+    } else {
+        cssClasses = classes.EmptyImage
+    }
+    
     return (
         <div>
             <input 
-                className={classes.Search} 
+                className={cssClasses} 
                 type="text" 
                 value={props.value} 
                 onChange={evt => props.typeStock(evt)}
-                placeholder="Search for stocks..." 
+                placeholder="search"
                 title="Type in a stock"/>
             {props.filteredList.map(symbol => (
                 <div key={symbol.symbol}

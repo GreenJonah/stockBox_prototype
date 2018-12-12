@@ -7,7 +7,10 @@ const portfolio = (props) => {
     let total = (props.portfolio).toFixed(2);
     let buy_power = (props.buyPower).toFixed(2);
     let stock_net = (props.stockNet).toFixed(2);
-    let gain_loss = (props.gain_loss).toFixed(2);
+    let gain_loss = 0;
+    if (parseInt(props.gain_loss.length) > 0) {
+        gain_loss = (props.gain_loss[props.gain_loss.length - 1]).toFixed(2);
+    } 
     let color = classes.green;
     if (props.percent < 0) {
         color = classes.red;

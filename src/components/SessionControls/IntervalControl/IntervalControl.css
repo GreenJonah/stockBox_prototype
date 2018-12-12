@@ -20,7 +20,7 @@
 .intervalSelect {
     grid-area: select; 
     text-align-last: center;
-    background-color: white;
+    background-color: whitesmoke;
     color: black;
     border: 3px solid black;
     font-family: 'Oswald';
@@ -30,7 +30,7 @@
 
 .nextButton {
     grid-area: button;
-    background-color: white;
+    background-color: whitesmoke;
     color: black;
     border: 3px solid black;
     font-family: 'Oswald';
