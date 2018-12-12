@@ -6,6 +6,7 @@
     color: white;
     font-family: 'Fjalla One';
     font-size: 400%;
+    font-size: 4vw;
 }
 
 .wrapper {
@@ -26,6 +27,7 @@
 
 .label {
     font-size: 150%;
+    font-size: 1.2vw;
     font-family: 'Oswald';
     color: whitesmoke;
     text-align: center;

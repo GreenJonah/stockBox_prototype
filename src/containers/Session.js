@@ -7,6 +7,8 @@ import Viewport from '../components/Viewport/Viewport';
 import Tools from '../components/Tools/Tools';
 import BuyModal from '../components/Trading/Buy';
 import SellModal from '../components/Trading/Sell';
+import CreateModal from '../components/SaveLoad/SaveModal';
+import LoadModal from '../components/SaveLoad/LoadModal';
 import classes from './Session.css';
 import * as apiServices from '../SharedServices/api-services';
 
@@ -45,6 +47,8 @@ class Session extends Component {
         portfolioGraph:{},
         buyModal: false,
         sellModal: false,
+        saveModal: false,
+        loadModal: false,
         buySellQuantity: 0,
         not_owned_stock: false,
         BackgroundImage: "Search"
@@ -342,20 +346,41 @@ class Session extends Component {
     }
 
     handleOpenModal = (event) => {
-        let action = event.target.value;
-        if (action === 'buy')
-            this.setState({ buyModal: true });
-        if (action === 'sell')
-            this.setState({sellModal: true});
+        switch (event.target.value) {
+            case 'buy':
+                this.setState({ buyModal: true });
+                break;
+            case 'sell':
+                this.setState({sellModal: true});
+                break;
+            case 'save':
+                this.setState({saveModal: true});
+                break;
+            case 'load':
+                this.setState({loadModal: true});
+                break;
+            default:
+            break;
+        }
     }
     
     handleCloseModal = (event) => {
-        let action = event.target.value;
-        if (action === 'buy')
-            this.setState({ buyModal: false });
-        if (action === 'sell')
-            this.setState({sellModal: false });
-       
+        switch (event.target.value) {
+            case 'buy':
+                this.setState({ buyModal: false });
+                break;
+            case 'sell':
+                this.setState({sellModal: false});
+                break;
+            case 'save':
+                this.setState({saveModal: false});
+                break;
+            case 'load':
+                this.setState({loadModal: false});
+                break;
+            default:
+            break;
+        }
         this.setState({ 
             buySellQuantity: 0 });
     }
@@ -577,9 +602,8 @@ class Session extends Component {
                         stockGraph={this.state.stockGraph}
                         display_porfolio={() => this.displayPortfolio()}
                         logo={this.state.logo}
-                        openBuyModal={this.handleOpenModal}
-                        openSellModal={this.handleOpenModal}
                         not_owned={this.state.not_owned_stock}
+                        openModal={this.handleOpenModal}
                     />
                     <BuyModal
                         showModal={this.state.buyModal}
@@ -600,6 +624,14 @@ class Session extends Component {
                         changeQuantity={this.quantityChangeHandler}
                         marketPrice={this.state.viewport_stock.marketPrice}
                     />
+                    <CreateModal
+                        showModal={this.state.saveModal}
+                        handleCloseModal={this.handleCloseModal}
+                    />
+                    <LoadModal
+                        showModal={this.state.loadModal}
+                        handleCloseModal={this.handleCloseModal}
+                    />   
                 </div>
                 <div className={classes.stock}>{
                     <Stocks
@@ -614,7 +646,9 @@ class Session extends Component {
                         startDate={this.state.startDate}
                         interval={this.state.interval}
                         next={this.dateChangeHandler}
-                        intervalChange={this.intervalChangeHandler} />
+                        intervalChange={this.intervalChangeHandler} 
+                        openModal={this.handleOpenModal}
+                    />
                 </div>
             </div>
         );

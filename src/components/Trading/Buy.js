@@ -25,7 +25,7 @@ const modal = (props) => {
   return (
       <ReactModal
           isOpen={props.showModal}
-          contentLabel="onRequestClose Example"
+          contentLabel="Buy Modal"
           onRequestClose={props.handleCloseModal}
           className={classes.modal}
           overlayClassName="Overlay"
