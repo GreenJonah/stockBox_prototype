@@ -46,6 +46,26 @@ app.get("/api/getAllStockData", (req, res, next) => {
         });
 });
 
+app.get("/api/getSessionDates", (req, res, next) => {
+    firebase.getAllSessionDatesFromFirebase()
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED TO GET STOCKS");
+        });
+});
+
+app.get("/api/getPortfolioData", (req, res, next) => {
+    firebase.getPortfolioDataFromFirebase()
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED TO GET STOCKS");
+        });
+});
+
 app.get("/api/getAllSymbolData", (req, res, next) => {
     firebase.getAllSymbolDataFromDatabase()
         .then(response => {
@@ -87,6 +107,17 @@ app.put("/api/putStockData", (req, res, next) => {
     firebase.putStockDataToFirebase(stock)
         .then(response => {
             res.status(200).json({message: "Stock updated"});
+        })
+        .catch(error => {
+            console.log("FAILED TO PUT STOCK");
+        });
+});
+
+app.put("/api/putSessionDates", (req, res, next) => {
+    const dates = req.body;
+    firebase.putSessionDatesToFirebase(dates)
+        .then(response => {
+            res.status(200).json({message: "Dates updated"});
         })
         .catch(error => {
             console.log("FAILED TO PUT STOCK");

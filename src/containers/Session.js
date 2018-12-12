@@ -21,8 +21,8 @@ class Session extends Component {
         sessionKey: 0,
         symbols: [],
         portfolio: {
-            portfolio_total: 1000,
-            buy_power: 1000,
+            portfolio_total: 0,
+            buy_power: 0,
             stock_net: 0,
             returns: 0,
             gain_loss_data: {
@@ -30,9 +30,9 @@ class Session extends Component {
                 dates: []
             }
         },
-        endDate: 1536904800000, // Sep 14th, 2018
-        sessionDate: 1528956000000, 
-        startDate: 1528956000000,   // June 15, 2018
+        endDate: 0, 
+        sessionDate: 0, 
+        startDate: 0, 
         filteredSymbols: [],
         inputValue: "",
         viewport_stock: {
@@ -65,7 +65,7 @@ class Session extends Component {
             console.log("Yes");
             this.setState({sessionKey: localStorage.getItem("sessionKey")});
             apiServices.setNodeSessionKey(localStorage.getItem("sessionKey"));
-            this.getInitialStockData();
+            this.getInitialSessionData();
             
         } else {
             console.log("No")
@@ -75,7 +75,7 @@ class Session extends Component {
         }
     }
 
-    getInitialStockData = () => {
+    getInitialSessionData = () => {
         apiServices.getAllStockData()
             .then(response => {
                 console.log("MARKET data: ", response);
@@ -93,6 +93,46 @@ class Session extends Component {
                 this.setState({
                     symbols: response
                 });
+            })
+            .catch(error => {
+                this.setState({ error: true })
+            });
+
+        apiServices.getSessionDates()
+            .then(response => {
+                console.log("Session Dates: ", response);
+                this.setState({
+                    sessionDate: response.sessionDate,
+                    startDate: response.startDate,
+                    endDate: response.endDate
+                });
+            })
+            .catch(error => {
+                this.setState({ error: true })
+            });
+        
+        apiServices.getPortfolioData()
+            .then(response => {
+                console.log("Portfolio Data: ", response);
+                if (response.gain_loss_data == null) {
+                    let port = {
+                        ...response
+                    }
+                    port.gain_loss_data = {
+                        ...this.state.portfolio.gain_loss_data
+                    }
+                    console.log("Portfolio data: ", port);
+
+                    this.setState({
+                        portfolio: port
+                    });
+                } else {
+                    this.setState({
+                        portfolio: response
+                    });
+                }
+
+                this.getPortfolioGraph();
             })
             .catch(error => {
                 this.setState({ error: true })
@@ -222,7 +262,7 @@ class Session extends Component {
 
     dateChangeHandler = () => {
         let newSessionDate = this.state.sessionDate;
-        let currentDate = new Date().getTime();
+        let endDate = this.state.endDate;
 
         switch (this.state.interval) {
             case "day":
@@ -238,15 +278,15 @@ class Session extends Component {
                 newSessionDate += 3.1536E+10;
                 break;
             case "finish":
-                newSessionDate = currentDate;
+                newSessionDate = endDate;
                 break;
             default:
                 break;
         }
 
         // The new session date cannot exceed the current date
-        if (newSessionDate >= currentDate)
-            newSessionDate = currentDate;
+        if (newSessionDate >= endDate)
+            newSessionDate = endDate;
 
         // update data
         this.updateIntervalDataHandler(newSessionDate, this.state.sessionDate);
@@ -255,6 +295,12 @@ class Session extends Component {
         this.setState({
             sessionDate: newSessionDate
         });
+        let sessionDates = {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            sessionDate: newSessionDate
+        }
+        apiServices.putSessionDates(sessionDates);
     }
 
     updateIntervalDataHandler = async (sessionDate, prevSessionDate) => {
@@ -288,7 +334,10 @@ class Session extends Component {
         } 
 
         this.updatePorfolioData(portfolio, owned, prevSessionDate, sessionDate);
-        
+        this.updateViewPort();
+    }
+
+    updateViewPort = () => {
         // reset the graphs
         if (this.state.not_owned_stock){
             console.log("Fired");
@@ -479,20 +528,26 @@ class Session extends Component {
                     console.log("remaining: " + remainingStockQuantity);
                 }
                 
+                // IF CASCADE, DELETING OR UPDATING STOCK
                 if (remainingStockQuantity == 0) {
                     // delete stock from the database
                     apiServices.deleteStockData(owned[i]);
                     owned.splice(i, 1);
-                    this.displayPortfolio();
                     console.log("Owned stocks, ", owned);
                 } else {
                     // update stock in database
                     apiServices.putStockData(owned[i]);
                     owned[i] = this.updateStockGainOrLoss(owned[i]);
-                    this.displayStock(symbol);
                 }
                 this.setState({owned_stocks: owned});
                 this.updatePorfolioData(portfolio, owned, this.state.sessionDate, this.state.sessionDate);
+
+                // IF CASCADE, CHANGING VIEW PORT OPTIONS
+                if (remainingStockQuantity == 0) {
+                    this.displayPortfolio();
+                } else {
+                    this.updateViewPort();
+                }
             }
         }
     }
@@ -644,6 +699,7 @@ class Session extends Component {
                         className={classes.session}
                         sessionDate={this.state.sessionDate}
                         startDate={this.state.startDate}
+                        endDate={this.state.endDate}
                         interval={this.state.interval}
                         next={this.dateChangeHandler}
                         intervalChange={this.intervalChangeHandler} 

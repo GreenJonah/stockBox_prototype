@@ -18,6 +18,36 @@ const getAllStockDataFromFirebase = async () => {
     return market;
 }
 
+// GET SESSION DATES FROM DATABASE
+const getAllSessionDatesFromFirebase = async () => {
+    let sessionDates = {};
+
+    await firebaseURL.get("/sessionDates.json")
+        .then(response => {
+            sessionDates = response.data;
+        })
+        .catch(error => {
+            console.log("Failed to retrieve session dates")
+        });
+
+    return sessionDates;
+}
+
+// GET PORFOLIO DATA FROM DATABASE
+const getPortfolioDataFromFirebase = async () => {
+    let portfolio = {};
+
+    await firebaseURL.get("/portfolio.json")
+        .then(response => {
+            portfolio = response.data;
+        })
+        .catch(error => {
+            console.log("Failed to retrieve portfolio data")
+        });
+
+    return portfolio;
+}
+
 // GET SYMBOL DATA FROM DATABASE
 const getAllSymbolDataFromDatabase = async () => {
     
@@ -87,6 +117,12 @@ const putPortfolioDataToFirebase = async (data) => {
     await firebaseURL.put("/portfolio.json", data);
 }
 
+// // PUT PORTFOLIO DATA TO FIREBASE
+const putSessionDatesToFirebase = async (data) => {
+
+    await firebaseURL.put("/sessionDates.json", data);
+}
+
 // DELETE STOCK DATA FROM DATABASE
 const deleteStockDataFromFirebase = async (key) => {
     await firebaseURL.delete("/owned_stocks/" + key + ".json");
@@ -99,5 +135,8 @@ module.exports = {
     deleteStockDataFromFirebase,
     putStockDataToFirebase,
     postSymbolDataToFirebase,
-    putPortfolioDataToFirebase
+    putPortfolioDataToFirebase,
+    getAllSessionDatesFromFirebase,
+    putSessionDatesToFirebase,
+    getPortfolioDataFromFirebase
 };
