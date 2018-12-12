@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import Names from './Names'
 import classes from './Load.css';
 
 const modal = (props) => {
@@ -12,14 +13,10 @@ const modal = (props) => {
             overlayClassName="Overlay"
         >
            <div className={classes.wrapper}>
-                <p>Load Session</p>
+                <p className={classes.loadTitle}>Load Session</p>
+                <Names names={props.sessionNames}/>
                 <button 
-                    onClick={props.handleCloseModal} 
-                    value='load'
-                >
-                    Load
-                </button>
-                <button 
+                    className={classes.cancelBtn}
                     onClick={props.handleCloseModal} 
                     value='load'
                 >

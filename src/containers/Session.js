@@ -47,6 +47,7 @@ class Session extends Component {
         saveModal: false,
         loadModal: false,
         buySellQuantity: 0,
+        sessionNames: ['session1', 'session2', 'session3'],
         not_owned_stock: false
     };
 
@@ -334,6 +335,7 @@ class Session extends Component {
                 this.setState({saveModal: true});
                 break;
             case 'load':
+                this.loadSessionNames();
                 this.setState({loadModal: true});
                 break;
             default:
@@ -360,6 +362,15 @@ class Session extends Component {
         }
         this.setState({ 
             buySellQuantity: 0 });
+    }
+
+    loadSessionNames = async() => {
+        let sessionNames = await apiServices.getAllSessionNames(); 
+        //this.setState({sessionNames: sessionNames});
+    }
+
+    loadSessionHandler = async () => {
+        
     }
 
     purchasedStock = async (symbol, event) => {
@@ -585,6 +596,8 @@ class Session extends Component {
                     <LoadModal
                         showModal={this.state.loadModal}
                         handleCloseModal={this.handleCloseModal}
+                        loadSessionNames={this.loadSessionNames}
+                        sessionNames={this.state.sessionNames}
                     />   
                 </div>
                 <div className={classes.stock}>{

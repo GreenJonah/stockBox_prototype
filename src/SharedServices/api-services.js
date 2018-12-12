@@ -43,6 +43,11 @@ export const getAllSymbolData = async () => {
     return await http.get("api/getAllSymbolData");
 }
 
+// GET SESSION NAMES FROM DATABASE
+export const getAllSessionNames = async () => {
+    return await http.get("api/getAllSessionNames");
+}
+
 // *************** STOCK API CALLS ******************
 
 // GET STOCK CHART DATA
