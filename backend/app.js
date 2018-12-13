@@ -86,6 +86,19 @@ app.get("/api/getAllSymbolData", (req, res, next) => {
         });
 });
 
+app.post("/api/postNewSession", (req, res, next) => {
+    const session = req.body;
+
+    firebase.postNewSessionToFirebase(session)
+        .then(response => {
+            console.log("session data?: ", response);
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED TO GET NEW SESSION");
+        });
+});
+
 app.post("/api/postNewStock", (req, res, next) => {
     const stock = req.body;
 

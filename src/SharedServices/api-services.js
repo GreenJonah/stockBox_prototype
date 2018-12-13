@@ -8,6 +8,11 @@ export const setNodeSessionKey = async (sessionKey) => {
 
 // *************** DATABASE API CALLS ******************
 
+// POST NEW SESSION
+export const postNewSession = async (data) => {
+    return await http.post("api/postNewSession", data);
+}
+
 // POST STOCK DATA
 export const postStockData = async (data) => {
     return await http.post("api/postNewStock", data);

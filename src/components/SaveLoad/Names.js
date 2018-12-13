@@ -8,7 +8,7 @@ import classes from './Names.css';
                 className={classes.select}
                 onChange={props.sessionSelected}
             >
-            <option>
+            <option value="no">
                 Select a Session
             </option>
             {props.allSessions.map(session => (

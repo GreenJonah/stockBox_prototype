@@ -16,17 +16,19 @@ const modal = (props) => {
                 <p className={classes.sessionNameTitle}>New Session Name</p>
                 <input  
                     className={classes.sessionName}
-                    value=''
+                    value={props.newName}
+                    onChange={props.changeName}
                 >
                 </input>
                 <p className={classes.startingMoneyTitle}>Starting Money</p>
                 <input 
                     className={classes.startingMoney}
-                    value=''
+                    value={props.startingMoney}
+                    onChange={props.changeStartingMoney}
                 >
                 </input>
                 <button
-                    onClick={props.handleCloseModal}
+                    onClick={props.createNewState}
                     value='save'
                     className={classes.create}
                 >

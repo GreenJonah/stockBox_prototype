@@ -51,6 +51,8 @@ class Session extends Component {
         buySellQuantity: 0,
         allSessions: [],
         sessionKey: 0,
+        startingMoney: 0,
+        sessionName: '',
         not_owned_stock: false,
         BackgroundImage: "Search"
     };
@@ -439,16 +441,16 @@ class Session extends Component {
     loadSessionNames = async() => {
         let sessions = await apiServices.getAllSessionNames(); 
         console.log("sessions", sessions);
-
-       this.setState({allSessions: sessions});
+        this.setState({allSessions: sessions});
     }
 
     sessionChangeHandler = (event) => {
         console.log("Event Target", event.target.value)
-
-        this.setState({sessionKey: event.target.value});
+        if(event.target.value != 'no')
+            this.setState({sessionKey: event.target.value});
+        else 
+            console.log("Default Select Chosen");
         console.log("Session Change", this.state.sessionKey)
-
     }
 
     loadSessionHandler = () => {
@@ -457,6 +459,51 @@ class Session extends Component {
         apiServices.setNodeSessionKey(this.state.sessionKey);
         this.getInitialSessionData();
         this.setState({loadModal: false})
+    }
+
+    getDates = () => {
+        let tempDate = new Date();
+        let end = tempDate.getTime();
+        let start = end - 7.884E+09;
+
+        let dates = {
+            startDate: start,
+            endDate: end
+        }
+        return dates;
+    }
+
+    createNewSessionHandler = async() => {
+        console.log("here")
+        let dates = this.getDates();
+        let newSession = {
+            portfolio: {
+                buy_power: parseFloat(this.state.startingMoney),
+                portfolio_total: parseFloat(this.state.startingMoney),
+                returns: 0,
+                stock_net: 0
+            },
+            sessionDates: {
+                endDate: dates.endDate,
+                sessionDate: dates.startDate,
+                startDate: dates.startDate
+            },
+            sessionName: this.state.sessionName
+        };
+        let newKey = await apiServices.postNewSession(newSession); 
+        localStorage.setItem("sessionKey", newKey);
+        this.setState({saveModal: false, sessionKey: newKey});
+        this.getInitialSessionData();
+    }
+
+    changeNameHandler = (event) => {
+        let newName = event.target.value;
+        this.setState({sessionName: newName});
+    }
+
+    changeStartingMoneyHandler = (event) => {
+        let Money = event.target.value;
+        this.setState({startingMoney: Money});
     }
 
     purchasedStock = async (symbol, event) => {
@@ -707,6 +754,11 @@ class Session extends Component {
                     <CreateModal
                         showModal={this.state.saveModal}
                         handleCloseModal={this.handleCloseModal}
+                        createNewState={this.createNewSessionHandler}
+                        changeStartingMoney={this.changeStartingMoneyHandler}
+                        changeName={this.changeNameHandler}
+                        newName={this.state.sessionName}
+                        startingMoney={this.state.startingMoney}
                     />
                     <LoadModal
                         showModal={this.state.loadModal}

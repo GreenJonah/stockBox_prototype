@@ -86,6 +86,23 @@ const getAllSessionNamesFromFirebase = async () => {
     return sessions;
 }
 
+// POST NEW SESSION TO FIREBASE
+const postNewSessionToFirebase = async (data) => {
+
+    let key = null;
+
+    await firebaseURL.post("https://stock-box-prototype.firebaseio.com/sessions.json", data)
+        .then(response => {
+            key = response.data.name;
+            console.log("Key value: ", key);
+        })
+        .catch(error => {
+            console.error("POST Request failed: ", error);
+        });
+        
+    return key;
+}
+
 // POST STOCK DATA TO FIREBASE
 const postStockDataToFirebase = async (data) => {
 
@@ -152,6 +169,7 @@ module.exports = {
     getAllStockDataFromFirebase,
     getAllSymbolDataFromDatabase,
     getAllSessionNamesFromFirebase,
+    postNewSessionToFirebase,
     postStockDataToFirebase,
     deleteStockDataFromFirebase,
     putStockDataToFirebase,
