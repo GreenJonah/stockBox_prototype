@@ -13,3 +13,64 @@
     top: 48%;
     transform: translate(-50%, -50%);
 }
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: 
+    "loadTitle loadTitle"
+    "list list"
+    "loadBtn cancelBtn"; 
+}
+
+.loadTitle {
+    grid-area: loadTitle;
+    background-color: black;
+    color: whitesmoke;
+    font-family: 'Oswald';
+    font-size: 200%;
+    width: 100%;
+    height: 50%;
+    text-align-last: center;
+    margin: 0 auto ;
+    vertical-align: middle;
+}
+
+.namesList {
+    grid-area: list;
+    color: whitesmoke;
+    font-family: 'Oswald';
+    font-size: 140%;
+    text-align-last: center;
+    width: 95%;
+    height: 60%;
+    margin: 0 auto;
+}
+
+.loadBtn {
+    grid-area: loadBtn;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.cancelBtn {
+    grid-area: cancelBtn;
+    margin-right: 5%; 
+    margin-left: auto;
+}
+
+.loadBtn, .cancelBtn{
+    background-color: white;
+    color: black;
+    border: 3px solid black;
+    font-family: 'Oswald';
+    font-size: 150%;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 2%;
+    width: 85%;
+    height: 45%;
+}

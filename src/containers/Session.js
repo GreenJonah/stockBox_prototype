@@ -18,7 +18,6 @@ class Session extends Component {
     state = {
         error: false,
         owned_stocks: [],
-        sessionKey: 0,
         symbols: [],
         portfolio: {
             portfolio_total: 0,
@@ -50,6 +49,8 @@ class Session extends Component {
         saveModal: false,
         loadModal: false,
         buySellQuantity: 0,
+        allSessions: [],
+        sessionKey: 0,
         not_owned_stock: false,
         BackgroundImage: "Search"
     };
@@ -67,7 +68,9 @@ class Session extends Component {
             this.getInitialSessionData();
             
         } else {
-            console.log("No")
+            console.log("No");
+            // Call a function to do this line let sessions = await.apiServices.getAllSessionNames();
+
             // Open up the create/load dialog, this would happen in the render function
             // we will probably need to create a jsx tag for both the two different pages, 
             // create/load dialog and the stock application itself
@@ -351,9 +354,7 @@ class Session extends Component {
     }
 
     intervalChangeHandler = (event) => {
-        this.setState({
-            interval: event.target.value
-        });
+        this.setState({interval: event.target.value});
     }
 
     filterStock = (event) => {
@@ -405,6 +406,7 @@ class Session extends Component {
                 this.setState({saveModal: true});
                 break;
             case 'load':
+                this.loadSessionNames();
                 this.setState({loadModal: true});
                 break;
             default:
@@ -431,6 +433,28 @@ class Session extends Component {
         }
         this.setState({ 
             buySellQuantity: 0 });
+    }
+
+    loadSessionNames = async() => {
+        let sessions = await apiServices.getAllSessionNames(); 
+        console.log("sessions", sessions);
+
+       this.setState({allSessions: sessions});
+    }
+
+    sessionChangeHandler = (event) => {
+        console.log("Event Target", event.target.value)
+
+        this.setState({sessionKey: event.target.value});
+        console.log("Session Change", this.state.sessionKey)
+
+    }
+
+    loadSessionHandler = () => {
+        console.log("Session", this.state.sessionKey);
+        localStorage.setItem("sessionKey", this.state.sessionKey);
+        this.getInitialSessionData();
+        this.setState({loadModal: false})
     }
 
     purchasedStock = async (symbol, event) => {
@@ -685,6 +709,11 @@ class Session extends Component {
                     <LoadModal
                         showModal={this.state.loadModal}
                         handleCloseModal={this.handleCloseModal}
+                        loadSessionNames={this.loadSessionNames}
+                        allSessions={this.state.allSessions}
+                        session={this.state.session}
+                        sessionSelected={this.sessionChangeHandler}
+                        loadSessionHandler={this.loadSessionHandler}
                     />   
                 </div>
                 <div className={classes.stock}>{

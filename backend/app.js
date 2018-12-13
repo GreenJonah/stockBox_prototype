@@ -23,6 +23,16 @@ app.use((req, res, next) => {
 
 // *************** DATABASE CALLS ******************
 
+app.get("/api/getAllSessionNames", (req, res, next) => {
+    firebase.getAllSessionNamesFromFirebase()
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log("FAILED TO GET Names");
+        });
+});
+
 app.get("/api/getAllStockData/:sessionKey", (req, res, next) => {
     
     let sessionKey = req.params.sessionKey;

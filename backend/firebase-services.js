@@ -66,6 +66,26 @@ const getAllSymbolDataFromDatabase = async () => {
     return symbols;
 }
 
+// GET SESSION NAMES FROM FIREBASE
+const getAllSessionNamesFromFirebase = async () => {
+    let sessions = [];
+
+    console.log("HERE");
+
+    // FIND HOW TO GET THE SESSION NAME IN THE URL
+    await firebaseURL.get("https://stock-box-prototype.firebaseio.com/sessions.json")
+    .then(response => {
+        Object.keys(response.data).forEach(function (key) {
+            sessions.push({name: response.data[key].sessionName, key: key});
+        });
+    })
+    .catch(error => {
+        console.log("Failed to retrieve session names");
+    });
+    
+    return sessions;
+}
+
 // POST STOCK DATA TO FIREBASE
 const postStockDataToFirebase = async (data, sessionKey) => {
 
@@ -131,6 +151,7 @@ const deleteStockDataFromFirebase = async (key, sessionKey) => {
 module.exports = {
     getAllStockDataFromFirebase,
     getAllSymbolDataFromDatabase,
+    getAllSessionNamesFromFirebase,
     postStockDataToFirebase,
     deleteStockDataFromFirebase,
     putStockDataToFirebase,
