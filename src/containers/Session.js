@@ -57,7 +57,7 @@ class Session extends Component {
         BackgroundImage: "Search"
     };
 
-    componentDidMount() {
+    async componentDidMount() {
 
         // INITIALY CHECK IF THE SESSION HAS EXPIRED USING THE SESSION START DATE,
         // IF IT IS BEFORE THE DATE OF A YEAR AGO TODAY, THEN THE SESSION HAS EXPIRED
@@ -72,10 +72,16 @@ class Session extends Component {
         } else {
             console.log("No");
             // Call a function to do this line let sessions = await.apiServices.getAllSessionNames();
+            let sessions = await this.loadSessionNames();
 
-            // Open up the create/load dialog, this would happen in the render function
-            // we will probably need to create a jsx tag for both the two different pages, 
-            // create/load dialog and the stock application itself
+            console.log("Sessions: ", sessions);
+            if (sessions.length != 0) {
+                console.log("Loaded Data");
+                this.setState({loadModal: true});
+            } else {
+                console.log("created Data");
+                this.setState({saveModal: true});
+            }
         }
     }
 
@@ -122,8 +128,10 @@ class Session extends Component {
                     let port = {
                         ...response
                     }
+
                     port.gain_loss_data = {
-                        ...this.state.portfolio.gain_loss_data
+                        gain_loss: [],
+                        dates: []
                     }
                     console.log("Portfolio data: ", port);
 
@@ -136,11 +144,41 @@ class Session extends Component {
                     });
                 }
 
+                this.resetInitialStateData();
                 this.getPortfolioGraph();
             })
             .catch(error => {
                 this.setState({ error: true })
             });
+    }
+    
+    resetInitialStateData = () => {
+        this.setState({
+            saveModal: false, 
+            filteredSymbols: [],
+            inputValue: "",
+            viewport_stock: {
+                symbol: "",
+                gain_or_loss: 0,
+                marketPrice: 0
+            },
+            graph_data: "Portfolio",
+            logo: "NA",
+            interval: "day",
+            stockGraph:{},
+            portfolioGraph:{},
+            buyModal: false,
+            sellModal: false,
+            saveModal: false,
+            loadModal: false,
+            buySellQuantity: 0,
+            allSessions: [],
+            sessionKey: 0,
+            startingMoney: 0,
+            sessionName: '',
+            not_owned_stock: false,
+            BackgroundImage: "Search"
+        });
     }
 
     displayStock = async (symbol) => {
@@ -276,7 +314,7 @@ class Session extends Component {
                 newSessionDate += 604800000;
                 break;
             case "month":
-                newSessionDate += 2.6280E+9;
+                newSessionDate += 2592000000;
                 break;
             case "finish":
                 newSessionDate = endDate;
@@ -438,6 +476,8 @@ class Session extends Component {
         let sessions = await apiServices.getAllSessionNames(); 
         console.log("sessions", sessions);
         this.setState({allSessions: sessions});
+
+        return sessions;
     }
 
     sessionChangeHandler = (event) => {
@@ -470,11 +510,16 @@ class Session extends Component {
 
     createNewSessionHandler = async() => {
         console.log("here")
+        console.log("Starting Money " + this.state.startingMoney);
         let dates = this.getDates();
         let newSession = {
             portfolio: {
                 buy_power: parseFloat(this.state.startingMoney),
                 portfolio_total: parseFloat(this.state.startingMoney),
+                gain_loss_data: {
+                    gain_loss: [],
+                    dates: []
+                },
                 returns: 0,
                 stock_net: 0
             },
@@ -487,12 +532,30 @@ class Session extends Component {
         };
         let newKey = await apiServices.postNewSession(newSession); 
         localStorage.setItem("sessionKey", newKey);
-        this.setState({ saveModal: false, 
-                        sessionKey: newKey,
-                        startingMoney: 0,
-                        sessionName: ''            
+
+        this.setState({
+            saveModal: false, 
+            sessionKey: newKey,
+            owned_stocks: [],
+            portfolio: newSession.portfolio,
+            sessionDate: dates.startDate,
+            startDate: dates.startDate,
+            endDate: dates.endDate,
         });
-        this.getInitialSessionData();
+
+        apiServices.getAllSymbolData()
+            .then(response => {
+                console.log("SYMBOL Data: ", response);
+                this.setState({
+                    symbols: response
+                });
+            })
+            .catch(error => {
+                this.setState({ error: true })
+            });
+
+        this.resetInitialStateData();
+        this.getPortfolioGraph();
     }
 
     changeNameHandler = (event) => {

@@ -87,12 +87,12 @@ export const getChart = async (owned_stock, startDate, sessionDate, key) => {
             // Set the past month of data but stop before the session date
             for(let i = 0; i < stockHistory.length; i++)
             {
-                let date = new Date(stockHistory[i].label);
+                let date = new Date(stockHistory[i].date + " 0:0:0");
                 let millTime = date.getTime();
                 // console.log("Date " + date + " Mill time: ", millTime + "  startDate: " + startDate + " sessionDate: " + sessionDate);
                 if (millTime >= startDate && millTime <= sessionDate)
                 {
-                    dates.push(stockHistory[i].label);
+                    dates.push((new Date(stockHistory[i].date + " 0:0:0").toString()).substring(4, 15));
                     stockData.push(stockHistory[i].close);
                 }
                 
