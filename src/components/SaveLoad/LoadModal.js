@@ -10,7 +10,7 @@ const modal = (props) => {
             contentLabel="onRequestClose Example"
             onRequestClose={props.handleCloseModal}
             className={classes.modal}
-            overlayClassName="Overlay"
+            overlayClassName={classes.Backdrop}
         >
            <div className={classes.wrapper}>
                 <p className={classes.loadTitle}>Load Session</p>

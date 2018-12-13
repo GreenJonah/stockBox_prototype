@@ -28,7 +28,7 @@ const modal = (props) => {
           contentLabel="Buy Modal"
           onRequestClose={props.handleCloseModal}
           className={classes.modal}
-          overlayClassName="Overlay"
+          overlayClassName={classes.Backdrop}
       >
         <div className={classes.wrapper}>
             <p className={classes.buyTitle}>Buying {props.stock.symbol.toUpperCase()}</p>

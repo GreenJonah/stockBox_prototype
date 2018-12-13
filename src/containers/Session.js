@@ -278,9 +278,6 @@ class Session extends Component {
             case "month":
                 newSessionDate += 2.6280E+9;
                 break;
-            case "year":
-                newSessionDate += 3.1536E+10;
-                break;
             case "finish":
                 newSessionDate = endDate;
                 break;
@@ -490,7 +487,11 @@ class Session extends Component {
         };
         let newKey = await apiServices.postNewSession(newSession); 
         localStorage.setItem("sessionKey", newKey);
-        this.setState({saveModal: false, sessionKey: newKey});
+        this.setState({ saveModal: false, 
+                        sessionKey: newKey,
+                        startingMoney: 0,
+                        sessionName: ''            
+        });
         this.getInitialSessionData();
     }
 
@@ -730,6 +731,7 @@ class Session extends Component {
                         not_owned={this.state.not_owned_stock}
                         openModal={this.handleOpenModal}
                     />
+           
                     <BuyModal
                         showModal={this.state.buyModal}
                         purchased={this.purchasedStock}
