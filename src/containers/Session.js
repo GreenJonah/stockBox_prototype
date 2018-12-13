@@ -64,7 +64,6 @@ class Session extends Component {
         if (localStorage.getItem("sessionKey")) {
             console.log("Yes");
             this.setState({sessionKey: localStorage.getItem("sessionKey")});
-            apiServices.setNodeSessionKey(localStorage.getItem("sessionKey"));
             this.getInitialSessionData();
             
         } else {

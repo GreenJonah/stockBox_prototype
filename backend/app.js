@@ -1,13 +1,8 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const firebase = require('./firebase-services');
+let firebase = require('./firebase-services');
 const iextrading = require('./iextrading-services');
-let localStorage = null;
-if ((typeof localStorage === "undefined" || localStorage === null)) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./local-storage');
-    console.log("INITIALIZED THE LOCALSTORAGE");
-}
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -26,18 +21,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// ****** SET BACKEND LOCAL STORAGE SESSION KEY ********
-
-app.get("/api/setSessionKey:id", (req, res, next) => {
-    const sessionKey = req.params.id;
-    localStorage.setItem('sessionKey', sessionKey);
-    res.status(200).json({message: "Session key set"});
-});
-
 // *************** DATABASE CALLS ******************
 
-app.get("/api/getAllStockData", (req, res, next) => {
-    firebase.getAllStockDataFromFirebase()
+app.get("/api/getAllStockData/:sessionKey", (req, res, next) => {
+    
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key getAllStockData: " + sessionKey);
+
+    firebase.getAllStockDataFromFirebase(sessionKey)
         .then(response => {
             res.send(response);
         })
@@ -46,8 +37,12 @@ app.get("/api/getAllStockData", (req, res, next) => {
         });
 });
 
-app.get("/api/getSessionDates", (req, res, next) => {
-    firebase.getAllSessionDatesFromFirebase()
+app.get("/api/getSessionDates/:sessionKey", (req, res, next) => {
+   
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key getSessionDates: " + sessionKey);
+
+    firebase.getAllSessionDatesFromFirebase(sessionKey)
         .then(response => {
             res.send(response);
         })
@@ -56,8 +51,12 @@ app.get("/api/getSessionDates", (req, res, next) => {
         });
 });
 
-app.get("/api/getPortfolioData", (req, res, next) => {
-    firebase.getPortfolioDataFromFirebase()
+app.get("/api/getPortfolioData/:sessionKey", (req, res, next) => {
+
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key getPortfolioData: " + sessionKey);
+
+    firebase.getPortfolioDataFromFirebase(sessionKey)
         .then(response => {
             res.send(response);
         })
@@ -76,10 +75,13 @@ app.get("/api/getAllSymbolData", (req, res, next) => {
         });
 });
 
-app.post("/api/postNewStock", (req, res, next) => {
+app.post("/api/postNewStock/:sessionKey", (req, res, next) => {
     const stock = req.body;
 
-    firebase.postStockDataToFirebase(stock)
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key postNewStock: " + sessionKey);
+
+    firebase.postStockDataToFirebase(stock, sessionKey)
         .then(response => {
             console.log("Stock data?: ", response);
             res.send(response);
@@ -102,9 +104,12 @@ app.post("/api/postNewSymbol", (req, res, next) => {
         });
 });
 
-app.put("/api/putStockData", (req, res, next) => {
+app.put("/api/putStockData/:sessionKey", (req, res, next) => {
     const stock = req.body;
-    firebase.putStockDataToFirebase(stock)
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key putStockData: " + sessionKey);
+
+    firebase.putStockDataToFirebase(stock, sessionKey)
         .then(response => {
             res.status(200).json({message: "Stock updated"});
         })
@@ -113,9 +118,12 @@ app.put("/api/putStockData", (req, res, next) => {
         });
 });
 
-app.put("/api/putSessionDates", (req, res, next) => {
+app.put("/api/putSessionDates/:sessionKey", (req, res, next) => {
     const dates = req.body;
-    firebase.putSessionDatesToFirebase(dates)
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key putSessionDates: " + sessionKey);
+
+    firebase.putSessionDatesToFirebase(dates, sessionKey)
         .then(response => {
             res.status(200).json({message: "Dates updated"});
         })
@@ -124,9 +132,12 @@ app.put("/api/putSessionDates", (req, res, next) => {
         });
 });
 
-app.put("/api/putPortfolioData", (req, res, next) => {
+app.put("/api/putPortfolioData/:sessionKey", (req, res, next) => {
     const portfolio = req.body;
-    firebase.putPortfolioDataToFirebase(portfolio)
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key putPortfolioData: " + sessionKey);
+
+    firebase.putPortfolioDataToFirebase(portfolio, sessionKey)
         .then(response => {
             res.status(200).json({message: "Portfolio updated"});
         })
@@ -135,9 +146,11 @@ app.put("/api/putPortfolioData", (req, res, next) => {
         });
 });
 
-app.delete("/api/deleteStockData/:id", (req, res, next) => {
+app.delete("/api/deleteStockData/:id/:sessionKey", (req, res, next) => {
     const key = req.params.id;
-    firebase.deleteStockDataFromFirebase(key)
+    let sessionKey = req.params.sessionKey;
+    console.log("Session Key deleteStockData: " + sessionKey);
+    firebase.deleteStockDataFromFirebase(key, sessionKey)
         .then(response => {
             res.status(200).json({message: "Stock deleted"});
         })
