@@ -67,7 +67,6 @@ class Session extends Component {
         if (localStorage.getItem("sessionKey")) {
             console.log("Yes");
             this.setState({sessionKey: localStorage.getItem("sessionKey")});
-            apiServices.setNodeSessionKey(localStorage.getItem("sessionKey"));
             this.getInitialSessionData();
             
         } else {
@@ -456,7 +455,6 @@ class Session extends Component {
     loadSessionHandler = () => {
         console.log("Session", this.state.sessionKey);
         localStorage.setItem("sessionKey", this.state.sessionKey);
-        apiServices.setNodeSessionKey(this.state.sessionKey);
         this.getInitialSessionData();
         this.setState({loadModal: false})
     }

@@ -1,11 +1,11 @@
 const {firebaseURL} = require('./axios-services');
 
 // GET STOCK DATA FROM DATABASE
-const getAllStockDataFromFirebase = async () => {
+const getAllStockDataFromFirebase = async (sessionKey) => {
     
     let market = [];
 
-    await firebaseURL.get("/owned_stocks.json")
+    await firebaseURL.get("/"+sessionKey+"/owned_stocks.json")
         .then(response => {
             Object.keys(response.data).forEach(function (key) {
                 market.push({ ...response.data[key], key })
@@ -19,10 +19,10 @@ const getAllStockDataFromFirebase = async () => {
 }
 
 // GET SESSION DATES FROM DATABASE
-const getAllSessionDatesFromFirebase = async () => {
+const getAllSessionDatesFromFirebase = async (sessionKey) => {
     let sessionDates = {};
 
-    await firebaseURL.get("/sessionDates.json")
+    await firebaseURL.get("/"+sessionKey+"/sessionDates.json")
         .then(response => {
             sessionDates = response.data;
         })
@@ -34,10 +34,10 @@ const getAllSessionDatesFromFirebase = async () => {
 }
 
 // GET PORFOLIO DATA FROM DATABASE
-const getPortfolioDataFromFirebase = async () => {
+const getPortfolioDataFromFirebase = async (sessionKey) => {
     let portfolio = {};
 
-    await firebaseURL.get("/portfolio.json")
+    await firebaseURL.get("/"+sessionKey+"/portfolio.json")
         .then(response => {
             portfolio = response.data;
         })
@@ -104,11 +104,11 @@ const postNewSessionToFirebase = async (data) => {
 }
 
 // POST STOCK DATA TO FIREBASE
-const postStockDataToFirebase = async (data) => {
+const postStockDataToFirebase = async (data, sessionKey) => {
 
     let newData = null;
 
-    await firebaseURL.post("/owned_stocks.json", data)
+    await firebaseURL.post("/"+sessionKey+"/owned_stocks.json", data)
         .then(response => {
             let key = response.data.name;
             console.log("Key value: ", key);
@@ -140,29 +140,29 @@ const postSymbolDataToFirebase = async (data) => {
 }
 
 // // PUT STOCK DATA TO FIREBASE
-const putStockDataToFirebase = async (data) => {
+const putStockDataToFirebase = async (data, sessionKey) => {
 
     let key = data.key;
     delete data.key;
 
-    await firebaseURL.put("/owned_stocks/" + key + ".json", data);
+    await firebaseURL.put("/"+sessionKey+"/owned_stocks/" + key + ".json", data);
 }
 
 // // PUT PORTFOLIO DATA TO FIREBASE
-const putPortfolioDataToFirebase = async (data) => {
+const putPortfolioDataToFirebase = async (data, sessionKey) => {
 
-    await firebaseURL.put("/portfolio.json", data);
+    await firebaseURL.put("/"+sessionKey+"/portfolio.json", data);
 }
 
 // // PUT PORTFOLIO DATA TO FIREBASE
-const putSessionDatesToFirebase = async (data) => {
+const putSessionDatesToFirebase = async (data, sessionKey) => {
 
-    await firebaseURL.put("/sessionDates.json", data);
+    await firebaseURL.put("/"+sessionKey+"/sessionDates.json", data);
 }
 
 // DELETE STOCK DATA FROM DATABASE
-const deleteStockDataFromFirebase = async (key) => {
-    await firebaseURL.delete("/owned_stocks/" + key + ".json");
+const deleteStockDataFromFirebase = async (key, sessionKey) => {
+    await firebaseURL.delete("/"+sessionKey+"/owned_stocks/" + key + ".json");
 }
 
 module.exports = {

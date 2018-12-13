@@ -1,11 +1,5 @@
 import  * as http from './http-services';
 
-// ****** SET BACKEND LOCAL STORAGE SESSION KEY ********
-
-export const setNodeSessionKey = async (sessionKey) => {
-    return await http.get("api/setSessionKey" + sessionKey);
-}
-
 // *************** DATABASE API CALLS ******************
 
 // POST NEW SESSION
@@ -15,7 +9,7 @@ export const postNewSession = async (data) => {
 
 // POST STOCK DATA
 export const postStockData = async (data) => {
-    return await http.post("api/postNewStock", data);
+    return await http.post("api/postNewStock/" + localStorage.getItem("sessionKey"), data);
 }
 
 // // POST SYMBOL DATA
@@ -25,37 +19,37 @@ export const postSymbolData= async (data) => {
 
 // PUT STOCK DATA 
 export const putStockData = async (data) => {
-    await http.put("api/putStockData", data);
+    await http.put("api/putStockData/" + localStorage.getItem("sessionKey"), data);
 }
 
 // PUT STOCK DATA 
 export const putSessionDates = async (data) => {
-    await http.put("api/putSessionDates", data);
+    await http.put("api/putSessionDates/" + localStorage.getItem("sessionKey"), data);
 }
 
 // PUT PORFOLIO DATA 
 export const putPorfolioData = async (data) => {
-    await http.put("api/putPortfolioData", data);
+    await http.put("api/putPortfolioData/" + localStorage.getItem("sessionKey"), data);
 }
 
 // DELETE STOCK DATA
 export const deleteStockData = async (data) => {
-    await http.del("api/deleteStockData/" + data.key);
+    await http.del("api/deleteStockData/" + data.key + "/" + localStorage.getItem("sessionKey"));
 }
 
 // GET ALL STOCK DATA
 export const getAllStockData = async () => {    
-   return await http.get("api/getAllStockData");
+   return await http.get("api/getAllStockData/" + localStorage.getItem("sessionKey"));
 }
 
 // GET SESSION DATES
 export const getSessionDates = async () => {    
-    return await http.get("api/getSessionDates");
+    return await http.get("api/getSessionDates/" + localStorage.getItem("sessionKey"));
 }
 
 // GET PORTFOLIO DATA
  export const getPortfolioData = async () => {    
-    return await http.get("api/getPortfolioData");
+    return await http.get("api/getPortfolioData/" + localStorage.getItem("sessionKey"));
  }
 
 // GET SYMBOL DATA FROM DATABASE
