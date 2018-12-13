@@ -6,13 +6,15 @@ import classes from './Names.css';
         return (
             <select 
                 className={classes.select}
-                value={props.session} 
                 onChange={props.sessionSelected}
             >
+            <option>
+                Select a Session
+            </option>
             {props.allSessions.map(session => (
                 <option 
-                    key={session.key.toString()} 
-                    value={session.name.toString()}
+                    key={session.key} 
+                    value={session.key}
             >
                 {session.name}
             </option>

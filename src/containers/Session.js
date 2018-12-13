@@ -50,10 +50,7 @@ class Session extends Component {
         loadModal: false,
         buySellQuantity: 0,
         allSessions: [],
-        session: {
-            name:'',
-            key:''
-        },
+        sessionKey: 0,
         not_owned_stock: false,
         BackgroundImage: "Search"
     };
@@ -447,11 +444,19 @@ class Session extends Component {
     }
 
     sessionChangeHandler = (event) => {
-        this.setState({session: event.target.value});
+        console.log("Event Target", event.target.value)
+
+        this.setState({sessionKey: event.target.value});
+        console.log("Session Change", this.state.sessionKey)
+
     }
 
-    loadSessionHandler = async () => {
-        let sessions = await apiServices.getAllSessionNames();
+    loadSessionHandler = () => {
+        console.log("Session", this.state.sessionKey);
+        localStorage.setItem("sessionKey", this.state.sessionKey);
+        apiServices.setNodeSessionKey(this.state.sessionKey);
+        this.getInitialSessionData();
+        this.setState({loadModal: false})
     }
 
     purchasedStock = async (symbol, event) => {
@@ -710,6 +715,7 @@ class Session extends Component {
                         allSessions={this.state.allSessions}
                         session={this.state.session}
                         sessionSelected={this.sessionChangeHandler}
+                        loadSessionHandler={this.loadSessionHandler}
                     />   
                 </div>
                 <div className={classes.stock}>{

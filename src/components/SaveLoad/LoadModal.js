@@ -14,15 +14,16 @@ const modal = (props) => {
         >
            <div className={classes.wrapper}>
                 <p className={classes.loadTitle}>Load Session</p>
-                <Names 
-                    sessionSelected={props.sessionSelected} 
-                    allSessions={props.allSessions}
-                    session={props.session}
-                    names={props.sessionNames}
-                />
+                <div className={classes.namesList}>
+                    <Names 
+                        sessionSelected={props.sessionSelected} 
+                        allSessions={props.allSessions}
+                        session={props.session}
+                    />
+                </div>
                 <button 
                     className={classes.loadBtn}
-                    onClick={props.handleCloseModal} 
+                    onClick={props.loadSessionHandler} 
                     value='load'
                 >
                     load

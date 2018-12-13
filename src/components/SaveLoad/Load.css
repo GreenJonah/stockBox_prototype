@@ -31,10 +31,10 @@
     background-color: black;
     color: whitesmoke;
     font-family: 'Oswald';
-    font-size: 180%;
+    font-size: 200%;
     width: 100%;
-    height: 100%;
-    text-align: center;
+    height: 50%;
+    text-align-last: center;
     margin: 0 auto ;
     vertical-align: middle;
 }
@@ -43,17 +43,23 @@
     grid-area: list;
     color: whitesmoke;
     font-family: 'Oswald';
-    font-size: 180%;
-    text-align: center;
+    font-size: 140%;
+    text-align-last: center;
+    width: 95%;
+    height: 60%;
     margin: 0 auto;
 }
 
 .loadBtn {
     grid-area: loadBtn;
+    margin-left: 5%;
+    margin-right: auto;
 }
 
 .cancelBtn {
     grid-area: cancelBtn;
+    margin-right: 5%; 
+    margin-left: auto;
 }
 
 .loadBtn, .cancelBtn{
@@ -61,7 +67,7 @@
     color: black;
     border: 3px solid black;
     font-family: 'Oswald';
-    font-size: 120%;
+    font-size: 150%;
     border-radius: 8px;
     text-align: center;
     margin-bottom: 2%;
