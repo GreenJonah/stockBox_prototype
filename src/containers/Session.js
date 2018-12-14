@@ -497,7 +497,12 @@ class Session extends Component {
     }
 
     getDates = () => {
-        let tempDate = new Date();
+        let d = new Date();
+        let day = d.getDate();
+        let month = parseFloat(d.getMonth()) + 1;
+        let year = d.getFullYear();
+        let fullYear = year + "-" + month + "-" + day + " 0:0:0";
+        let tempDate = new Date(fullYear); 
         let end = tempDate.getTime();
         let start = end - 7.884E+09;
 
